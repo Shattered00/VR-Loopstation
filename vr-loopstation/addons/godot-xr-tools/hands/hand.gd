@@ -478,4 +478,5 @@ static func _find_child(node : Node, type : String) -> Node:
 
 
 func _on_area_3d_area_entered(area):
-	$AudioStreamPlayer3D.play()
+	$AudioBlock/AudioStreamPlayer3D.play()
+	print("hit")
