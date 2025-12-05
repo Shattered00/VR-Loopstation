@@ -18,6 +18,9 @@ config/icon="res://icon.svg"
 [audio]
 
 buses/default_bus_layout="res://audio/default_bus_layout.tres"
+driver/enable_input=true
+buses/channel_disable_threshold_db=-80.0
+buses/channel_disable_time=60.0
 
 [autoload]
 

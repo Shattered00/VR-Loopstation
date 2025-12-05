@@ -1,9 +1,9 @@
-[gd_scene load_steps=12 format=3 uid="uid://qtd35x1ssa0n"]
+[gd_scene load_steps=13 format=3 uid="uid://qtd35x1ssa0n"]
 
 [ext_resource type="Script" uid="uid://crrmqifibihsc" path="res://scenes/main.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://dmn563q7ufve6" path="res://scenes/right.gd" id="2_jyhfs"]
-[ext_resource type="AudioStream" uid="uid://b715uxayiopby" path="res://audio/impact_1.wav" id="3_sugp2"]
 [ext_resource type="Script" uid="uid://dlpo56ykv6qar" path="res://scenes/left.gd" id="3_tbgi4"]
+[ext_resource type="Script" uid="uid://oo7n610c8r7e" path="res://scenes/audiocore.gd" id="5_tbgi4"]
 
 [sub_resource type="Environment" id="Environment_jyhfs"]
 
@@ -18,6 +18,9 @@
 [sub_resource type="BoxMesh" id="BoxMesh_sugp2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
+
+[sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_jyhfs"]
+resource_local_to_scene = true
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_jyhfs")
@@ -69,13 +72,20 @@ shape = SubResource("BoxShape3D_0wfyh")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.579854, 0.07145715, -1.1735883)
 mesh = SubResource("BoxMesh_sugp2")
 skeleton = NodePath("")
-
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="WorldEnvironment/XROrigin3D/AudioBlock"]
-stream = ExtResource("3_sugp2")
+script = ExtResource("5_tbgi4")
 
 [node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/AudioBlock"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D"]
 shape = SubResource("BoxShape3D_jyhfs")
 
-[connection signal="area_entered" from="WorldEnvironment/XROrigin3D/AudioBlock/Area3D" to="WorldEnvironment/XROrigin3D/Left" method="_on_area_3d_area_entered"]
+[node name="Recording" type="AudioStreamPlayer3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D"]
+visibility_parent = NodePath("../..")
+stream = SubResource("AudioStreamMicrophone_jyhfs")
+max_db = 1.0
+autoplay = true
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D"]
+autoplay = true
+
+[connection signal="area_entered" from="WorldEnvironment/XROrigin3D/Left/MeshInstance3D/Area3D" to="WorldEnvironment/XROrigin3D/AudioBlock/Area3D/Recording" method="_on_area_3d_area_entered"]
