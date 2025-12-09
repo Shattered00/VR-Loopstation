@@ -3,6 +3,7 @@ extends MeshInstance3D
 var effect: AudioEffect
 var recording: AudioStreamWAV
 
+
 var stereo: bool = true
 var mix_rate := 44100  # This is the default mix rate on recordings.
 var format := AudioStreamWAV.FORMAT_16_BITS  # This is the default format on recordings.
@@ -21,9 +22,11 @@ func _on_area_3d_area_entered(_area):
 		recording = effect.get_recording()
 	else:
 		effect.set_recording_active(true)
+		$".".get_active_material(0).albedo_color = Color(1, 0, 0)
 		print("Status Recording")
 		
 		if recording:
+			$".".get_active_material(0).albedo_color = Color(0, 1, 0)
 			print_rich("\n[b]Playing recording:[/b] %s" % recording)
 			print_rich("[b]Format:[/b] %s" % ("8-bit uncompressed" if recording.format == 0 else "16-bit uncompressed" if recording.format == 1 else "IMA ADPCM compressed"))
 			print_rich("[b]Stereo:[/b] %s" % ("Yes" if recording.stereo else "No"))

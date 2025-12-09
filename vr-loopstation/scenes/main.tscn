@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://qtd35x1ssa0n"]
+[gd_scene load_steps=14 format=3 uid="uid://qtd35x1ssa0n"]
 
 [ext_resource type="Script" uid="uid://crrmqifibihsc" path="res://scenes/main.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://dmn563q7ufve6" path="res://scenes/right.gd" id="2_jyhfs"]
@@ -15,7 +15,10 @@
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sugp2"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jyhfs"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_sugp2"]
+material = SubResource("StandardMaterial3D_jyhfs")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_jyhfs"]
 
