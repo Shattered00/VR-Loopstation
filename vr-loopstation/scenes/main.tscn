@@ -1,9 +1,10 @@
-[gd_scene load_steps=14 format=3 uid="uid://qtd35x1ssa0n"]
+[gd_scene load_steps=17 format=3 uid="uid://qtd35x1ssa0n"]
 
 [ext_resource type="Script" uid="uid://crrmqifibihsc" path="res://scenes/main.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://dmn563q7ufve6" path="res://scenes/right.gd" id="2_jyhfs"]
 [ext_resource type="Script" uid="uid://dlpo56ykv6qar" path="res://scenes/left.gd" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://oo7n610c8r7e" path="res://scenes/audiocore.gd" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://dogcey6tojrqg" path="res://scenes/effects_button.gd" id="5_tefeu"]
 
 [sub_resource type="Environment" id="Environment_jyhfs"]
 
@@ -24,6 +25,10 @@ material = SubResource("StandardMaterial3D_jyhfs")
 
 [sub_resource type="AudioStreamMicrophone" id="AudioStreamMicrophone_jyhfs"]
 resource_local_to_scene = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_o6xl0"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tipki"]
 
 [node name="Node3D" type="Node3D"]
 script = ExtResource("1_jyhfs")
@@ -93,4 +98,16 @@ attenuation_model = 3
 autoplay = true
 attenuation_filter_db = 0.0
 
+[node name="Effects Button" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D"]
+transform = Transform3D(0.5, 0, 0, 0, 0.49955994, 0.020972703, 0, -0.020972703, 0.49955994, 0.7869018, -0.026890397, -1.3721435)
+mesh = SubResource("BoxMesh_o6xl0")
+script = ExtResource("5_tefeu")
+
+[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/Effects Button"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/Effects Button/Area3D"]
+transform = Transform3D(1.05, 0, 0, 0, 1.05, 0, 0, 0, 1.05, 0, 0, 0)
+shape = SubResource("BoxShape3D_tipki")
+
+[connection signal="area_entered" from="WorldEnvironment/XROrigin3D/Right/Area3D" to="WorldEnvironment/XROrigin3D/Effects Button" method="_on_area_3d_area_entered"]
 [connection signal="area_entered" from="WorldEnvironment/XROrigin3D/Left/MeshInstance3D/Area3D" to="WorldEnvironment/XROrigin3D/AudioBlock" method="_on_area_3d_area_entered"]
