@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://dupkt08xhh7yt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_exumw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xqly6"]
+albedo_color = Color(0.5254902, 0.5254902, 0.5254902, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_18to6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lptc5"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_inxy2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_amlny"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_w3wpe"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nraq1"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_1qprc"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" unique_id=1580601847]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_exumw")
+surface_material_override/0 = SubResource("StandardMaterial3D_xqly6")
+
+[node name="Record Button" type="MeshInstance3D" parent="." unique_id=1400202958]
+transform = Transform3D(0.4, 0, 0, 0, -1.9670125e-08, -0.4, 0, 0.45, -1.7484556e-08, -0.20404243, -0.23919383, 0.10923513)
+mesh = SubResource("CylinderMesh_18to6")
+surface_material_override/0 = SubResource("StandardMaterial3D_lptc5")
+
+[node name="Audio Level" type="MeshInstance3D" parent="." unique_id=1987768022]
+transform = Transform3D(0.2, 0, 0, 0, 0.15, 0, 0, 0, 0.3, 0.2510078, -0.27274945, 0.7792964)
+mesh = SubResource("BoxMesh_inxy2")
+surface_material_override/0 = SubResource("StandardMaterial3D_amlny")
+
+[node name="Audio level connector" type="MeshInstance3D" parent="Audio Level" unique_id=1539923220]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 2.0000002, 0, 0, -0.9124205)
+mesh = SubResource("BoxMesh_w3wpe")
+surface_material_override/0 = SubResource("StandardMaterial3D_nraq1")
+
+[node name="Stop Button" type="MeshInstance3D" parent="." unique_id=131372106]
+transform = Transform3D(0.2, 0, 0, 0, -1.9670125e-08, -0.2, 0, 0.45, -8.742278e-09, -0.3272836, 0.16172901, 0.109)
+mesh = SubResource("CylinderMesh_1qprc")

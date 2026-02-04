@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://qtd35x1ssa0n"]
+[gd_scene format=3 uid="uid://qtd35x1ssa0n"]
 
 [ext_resource type="Script" uid="uid://crrmqifibihsc" path="res://scenes/main.gd" id="1_jyhfs"]
 [ext_resource type="Script" uid="uid://dmn563q7ufve6" path="res://scenes/right.gd" id="2_jyhfs"]
@@ -32,83 +32,85 @@ resource_local_to_scene = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_tipki"]
 
-[node name="Node3D" type="Node3D"]
+[node name="Node3D" type="Node3D" unique_id=1107825048]
 script = ExtResource("1_jyhfs")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=69395977]
 environment = SubResource("Environment_jyhfs")
 
-[node name="XROrigin3D" type="XROrigin3D" parent="WorldEnvironment"]
+[node name="XROrigin3D" type="XROrigin3D" parent="WorldEnvironment" unique_id=1772884602]
 
-[node name="XRCamera3D" type="XRCamera3D" parent="WorldEnvironment/XROrigin3D"]
+[node name="XRCamera3D" type="XRCamera3D" parent="WorldEnvironment/XROrigin3D" unique_id=1731855526]
 current = true
 
-[node name="OpenXRMetaEnvironmentDepth" type="OpenXRMetaEnvironmentDepth" parent="WorldEnvironment/XROrigin3D/XRCamera3D"]
+[node name="OpenXRMetaEnvironmentDepth" type="OpenXRMetaEnvironmentDepth" parent="WorldEnvironment/XROrigin3D/XRCamera3D" unique_id=1841418421]
 
-[node name="Right" type="XRController3D" parent="WorldEnvironment/XROrigin3D"]
+[node name="AudioListener3D" type="AudioListener3D" parent="WorldEnvironment/XROrigin3D/XRCamera3D" unique_id=527269785]
+current = true
+
+[node name="Right" type="XRController3D" parent="WorldEnvironment/XROrigin3D" unique_id=988090255]
 tracker = &"right_hand"
 script = ExtResource("2_jyhfs")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D/Right"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D/Right" unique_id=51963700]
 transform = Transform3D(0.2499745, 0.0033206267, 0.0013145247, -0.003269095, 0.2498031, -0.0093664415, -0.0014378992, 0.009348297, 0.24982102, 0.5, 0, -0.5)
 material_override = SubResource("StandardMaterial3D_tefeu")
 mesh = SubResource("BoxMesh_tbgi4")
 skeleton = NodePath("")
 
-[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/Right"]
+[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/Right" unique_id=1358254070]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/Right/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/Right/Area3D" unique_id=1465886895]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 0.495, -0.001, -0.502)
 shape = SubResource("BoxShape3D_0wfyh")
 
-[node name="Left" type="XRController3D" parent="WorldEnvironment/XROrigin3D"]
+[node name="Left" type="XRController3D" parent="WorldEnvironment/XROrigin3D" unique_id=1713526077]
 tracker = &"left_hand"
 script = ExtResource("3_tbgi4")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D/Left"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D/Left" unique_id=1973568205]
 transform = Transform3D(0.2499745, 0.0033206267, 0.0013145247, -0.003269095, 0.2498031, -0.0093664415, -0.0014378992, 0.009348297, 0.24982102, -0.5, 0, -0.5)
 material_override = SubResource("StandardMaterial3D_sugp2")
 mesh = SubResource("BoxMesh_tbgi4")
 skeleton = NodePath("")
 
-[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/Left/MeshInstance3D"]
+[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/Left/MeshInstance3D" unique_id=639655127]
 transform = Transform3D(3.9995918, -0.052305523, -0.023006385, 0.053130023, 3.9968495, 0.14957274, 0.021032397, -0.14986306, 3.9971366, 1.9882927, 0.10135138, 2.0090845)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/Left/MeshInstance3D/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/Left/MeshInstance3D/Area3D" unique_id=554367039]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, -0.49530244, -0.0014315844, -0.5015342)
 shape = SubResource("BoxShape3D_0wfyh")
 
-[node name="AudioBlock" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D"]
+[node name="AudioBlock" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D" unique_id=627710518]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.579854, 0.07145715, -1.1735883)
 mesh = SubResource("BoxMesh_sugp2")
 skeleton = NodePath("")
 script = ExtResource("5_tbgi4")
 
-[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/AudioBlock"]
+[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/AudioBlock" unique_id=1287919156]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D" unique_id=1918187274]
 shape = SubResource("BoxShape3D_jyhfs")
 
-[node name="Recording" type="AudioStreamPlayer3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D"]
+[node name="Recording" type="AudioStreamPlayer3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D" unique_id=1854524893]
 visibility_parent = NodePath("../..")
 stream = SubResource("AudioStreamMicrophone_jyhfs")
 max_db = 1.0
 autoplay = true
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D"]
-attenuation_model = 3
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="WorldEnvironment/XROrigin3D/AudioBlock/Area3D" unique_id=1559720308]
 autoplay = true
 attenuation_filter_db = 0.0
 
-[node name="Effects Button" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D"]
+[node name="Effects Button" type="MeshInstance3D" parent="WorldEnvironment/XROrigin3D" unique_id=2109703220]
 transform = Transform3D(0.5, 0, 0, 0, 0.49955994, 0.020972703, 0, -0.020972703, 0.49955994, 0.7869018, -0.026890397, -1.3721435)
 mesh = SubResource("BoxMesh_o6xl0")
 surface_material_override/0 = SubResource("StandardMaterial3D_tbgi4")
 script = ExtResource("5_tefeu")
 
-[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/Effects Button"]
+[node name="Area3D" type="Area3D" parent="WorldEnvironment/XROrigin3D/Effects Button" unique_id=163780484]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/Effects Button/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/XROrigin3D/Effects Button/Area3D" unique_id=1194912569]
 transform = Transform3D(1.05, 0, 0, 0, 1.05, 0, 0, 0, 1.05, 0, 0, 0)
 shape = SubResource("BoxShape3D_tipki")
 
