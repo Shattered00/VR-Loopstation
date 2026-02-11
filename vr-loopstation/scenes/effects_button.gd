@@ -1,6 +1,6 @@
 extends MeshInstance3D
-var bus_name := "RecordBus"
-var effect_slot := 1  # Slot where your Reverb effect is located
+var bus_name := "Master"
+var effect_slot := 0  # Slot where your Reverb effect is located
 
 func _on_area_3d_area_entered(area):
 	var bus := AudioServer.get_bus_index(bus_name)

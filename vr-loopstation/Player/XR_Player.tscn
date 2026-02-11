@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://c5yoab8ubtuqt"]
+
+[ext_resource type="PackedScene" uid="uid://bx1xdisoqo1f6" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_tac_glove_low.tscn" id="1_ia538"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_miws7"]
+[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_ajjs1"]
+[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="4_miws7"]
+[ext_resource type="PackedScene" uid="uid://chumpejwiub7f" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_tac_glove_low.tscn" id="4_yiwwu"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_n4274"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_jcx8g"]
+
+[node name="Player" type="XROrigin3D"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="."]
+
+[node name="AudioListener3D" type="AudioListener3D" parent="XRCamera3D"]
+current = true
+
+[node name="XR_Controller_LeftHand" type="XRController3D" parent="."]
+tracker = &"left_hand"
+
+[node name="LeftHand" parent="XR_Controller_LeftHand" instance=ExtResource("1_ia538")]
+
+[node name="Directional Movement Override Control" parent="XR_Controller_LeftHand" instance=ExtResource("2_miws7")]
+strafe = true
+
+[node name="FunctionPickup" parent="XR_Controller_LeftHand" instance=ExtResource("3_ajjs1")]
+
+[node name="FunctionPointer Right" parent="XR_Controller_LeftHand" instance=ExtResource("4_miws7")]
+laser_length = 1
+show_target = true
+
+[node name="XR_Controller_RightHand" type="XRController3D" parent="."]
+tracker = &"right_hand"
+
+[node name="RightHand" parent="XR_Controller_RightHand" instance=ExtResource("4_yiwwu")]
+
+[node name="Rotation Override Control" parent="XR_Controller_RightHand" instance=ExtResource("5_n4274")]
+turn_mode = 2
+
+[node name="FunctionPickup" parent="XR_Controller_RightHand" instance=ExtResource("3_ajjs1")]
+
+[node name="FunctionPointer Left" parent="XR_Controller_RightHand" instance=ExtResource("4_miws7")]
+laser_length = 1
+show_target = true
+
+[node name="PlayerBody" parent="." instance=ExtResource("6_jcx8g")]
+
+[node name="UI_AudioPlayer" type="AudioStreamPlayer" parent="."]

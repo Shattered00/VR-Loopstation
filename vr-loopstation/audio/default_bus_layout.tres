@@ -1,13 +1,15 @@
 [gd_resource type="AudioBusLayout" format=3 uid="uid://bvafupekf8tse"]
 
-[sub_resource type="AudioEffectRecord" id="AudioEffectRecord_73ea7"]
-resource_name = "Record"
-
 [sub_resource type="AudioEffectReverb" id="AudioEffectReverb_73ea7"]
 resource_name = "Reverb"
 
+[sub_resource type="AudioEffectRecord" id="AudioEffectRecord_73ea7"]
+resource_name = "Record"
+
 [resource]
 bus/0/volume_db = 6.0199986
+bus/0/effect/0/effect = SubResource("AudioEffectReverb_73ea7")
+bus/0/effect/0/enabled = false
 bus/1/name = &"RecordBus"
 bus/1/solo = false
 bus/1/mute = true
@@ -16,5 +18,3 @@ bus/1/volume_db = 0.20946884
 bus/1/send = &"Master"
 bus/1/effect/0/effect = SubResource("AudioEffectRecord_73ea7")
 bus/1/effect/0/enabled = true
-bus/1/effect/1/effect = SubResource("AudioEffectReverb_73ea7")
-bus/1/effect/1/enabled = false
