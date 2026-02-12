@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://dupkt08xhh7yt"]
 
+[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_xqly6"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_exumw"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xqly6"]
@@ -20,6 +22,17 @@ albedo_color = Color(0, 0, 0, 1)
 albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_1qprc"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_18to6"]
+size = Vector3(0.5, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inxy2"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_amlny"]
+size = Vector3(0.05, 0.2, 0.08)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nraq1"]
+size = Vector3(0.05, 0.2, 0.08)
 
 [node name="MeshInstance3D" type="MeshInstance3D" unique_id=1580601847]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, 0, 0, 0)
@@ -44,3 +57,26 @@ surface_material_override/0 = SubResource("StandardMaterial3D_nraq1")
 [node name="Stop Button" type="MeshInstance3D" parent="." unique_id=131372106]
 transform = Transform3D(0.2, 0, 0, 0, -1.9670125e-08, -0.2, 0, 0.45, -8.742278e-09, -0.3272836, 0.16172901, 0.109)
 mesh = SubResource("CylinderMesh_1qprc")
+
+[node name="Object Grip Move" parent="." unique_id=251020461 instance=ExtResource("1_xqly6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042144682, 0.69768333, -0.04905939)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Object Grip Move" unique_id=599318639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.043404195, 0, 0.060423534)
+mesh = SubResource("BoxMesh_18to6")
+surface_material_override/0 = SubResource("StandardMaterial3D_inxy2")
+
+[node name="Add" type="MeshInstance3D" parent="." unique_id=32250768]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.594, 0.698, 0.002)
+mesh = SubResource("BoxMesh_amlny")
+skeleton = NodePath("../Object Grip Move")
+
+[node name="Add" type="MeshInstance3D" parent="Add" unique_id=310055315]
+transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_nraq1")
+skeleton = NodePath("../Object Grip Move")
+
+[node name="Remove" type="MeshInstance3D" parent="." unique_id=94388709]
+transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0, 0, 0, 1, -0.594, 0.698, 0.002)
+mesh = SubResource("BoxMesh_nraq1")
+skeleton = NodePath("../Object Grip Move")
