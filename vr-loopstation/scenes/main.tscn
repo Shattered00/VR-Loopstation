@@ -7,6 +7,9 @@
 [ext_resource type="Script" uid="uid://dogcey6tojrqg" path="res://scenes/effects_button.gd" id="5_tefeu"]
 
 [sub_resource type="Environment" id="Environment_jyhfs"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.46618086, 0.4661808, 0.4661808, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tefeu"]
 
@@ -34,6 +37,10 @@ resource_local_to_scene = true
 
 [node name="Node3D" type="Node3D" unique_id=1107825048]
 script = ExtResource("1_jyhfs")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=2144932995]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=69395977]
 environment = SubResource("Environment_jyhfs")
