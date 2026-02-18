@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://comtnrv5b5t47"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_113lq"]
+size = Vector3(6, 1.8, 0.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_113lq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_et4ga"]
+albedo_color = Color(1, 0.84313726, 0.84313726, 1)
+
+[node name="Main track thing" type="Node3D" unique_id=980687278]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=563767679]
+mesh = SubResource("BoxMesh_113lq")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=632805549]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6523924, 0.36552835)
+text = "Place holder text
+"
+outline_size = 0
+
+[node name="Metronomebutton" type="MeshInstance3D" parent="." unique_id=1380031586]
+transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 1.8788488, 0.3781187, 0.12853438)
+mesh = SubResource("CylinderMesh_113lq")
+surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
