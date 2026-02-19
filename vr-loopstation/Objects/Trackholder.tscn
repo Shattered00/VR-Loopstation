@@ -33,6 +33,8 @@ size = Vector3(0.5, 0.1, 0.1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inxy2"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_18to6"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_amlny"]
 size = Vector3(0.05, 0.2, 0.08)
 
@@ -91,6 +93,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.043404195, 0, 0.060423534)
 mesh = SubResource("BoxMesh_18to6")
 surface_material_override/0 = SubResource("StandardMaterial3D_inxy2")
 
+[node name="Area3D" type="Area3D" parent="Object Grip Move" unique_id=881873956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.043404195, 0, 0.060423534)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Object Grip Move/Area3D" unique_id=61317570]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+shape = SubResource("BoxShape3D_18to6")
+
 [node name="Add" type="MeshInstance3D" parent="." unique_id=32250768]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.594, 0.698, 0.002)
 mesh = SubResource("BoxMesh_amlny")
@@ -115,7 +124,7 @@ skeleton = NodePath("../Object Grip Move")
 [node name="Area3D" type="Area3D" parent="Remove" unique_id=1069800332]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Remove/Area3D" unique_id=378023609]
-transform = Transform3D(0.08, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 0, 0)
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
 shape = SubResource("BoxShape3D_amlny")
 
 [node name="TrackFX" type="MeshInstance3D" parent="." unique_id=1672836868]
