@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dai6n4h1s5wry"]
+
+[ext_resource type="PackedScene" uid="uid://c5yoab8ubtuqt" path="res://Player/XR_Player.tscn" id="1_2p2p4"]
+[ext_resource type="PackedScene" uid="uid://dupkt08xhh7yt" path="res://Objects/Trackholder.tscn" id="2_no0p5"]
+[ext_resource type="PackedScene" uid="uid://comtnrv5b5t47" path="res://Objects/Settings.tscn" id="3_py5qd"]
+
+[sub_resource type="Environment" id="Environment_no0p5"]
+background_mode = 1
+ambient_light_source = 2
+ambient_light_color = Color(0.46618086, 0.4661808, 0.4661808, 1)
+
+[node name="Node3D" type="Node3D" unique_id=1611743180]
+
+[node name="Player" parent="." unique_id=1169519212 instance=ExtResource("1_2p2p4")]
+
+[node name="Trackholder" parent="Player" unique_id=470996291 instance=ExtResource("2_no0p5")]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.18, -0.3915484, 0, -0.55620766)
+
+[node name="Main track thing" parent="Player" unique_id=980687278 instance=ExtResource("3_py5qd")]
+transform = Transform3D(0.2, 0, 0, 0, 0.19998954, -0.0020454903, 0, 0.0020454903, 0.19998954, 0.40211815, 0.19935519, -1.1935856)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=14926954]
+environment = SubResource("Environment_no0p5")

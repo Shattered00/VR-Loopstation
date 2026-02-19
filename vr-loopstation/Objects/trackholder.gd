@@ -1,10 +1,9 @@
-extends MeshInstance3D
+extends Node3D
 class_name Trackholder
 
 signal interacted(control: Trackholder, hand: Node)
 
 @export var action_id: StringName
-@export var cooldown: float = 0.15
 
 @onready var touch_area: Area3D = $Area3D
 var _locked := false
@@ -22,5 +21,3 @@ func _on_area_entered(area: Area3D):
 	interacted.emit(self, area)
 
 	_locked = true
-	var t := get_tree().create_timer(cooldown)
-	t.timeout.connect(func(): _locked = false)
