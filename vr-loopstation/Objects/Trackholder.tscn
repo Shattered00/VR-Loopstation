@@ -34,6 +34,8 @@ size = Vector3(0.05, 0.2, 0.08)
 [sub_resource type="BoxMesh" id="BoxMesh_nraq1"]
 size = Vector3(0.05, 0.2, 0.08)
 
+[sub_resource type="CylinderMesh" id="CylinderMesh_xqly6"]
+
 [node name="MeshInstance3D" type="MeshInstance3D" unique_id=1580601847]
 transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 1.5, 0, 0, 0)
 mesh = SubResource("BoxMesh_exumw")
@@ -80,3 +82,7 @@ skeleton = NodePath("../Object Grip Move")
 transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0, 0, 0, 1, -0.594, 0.698, 0.002)
 mesh = SubResource("BoxMesh_nraq1")
 skeleton = NodePath("../Object Grip Move")
+
+[node name="TrackFX" type="MeshInstance3D" parent="." unique_id=1672836868]
+transform = Transform3D(0.4, 0, 0, 0, -1.9670125e-08, -0.25, 0, 0.45, -1.0927847e-08, 0.13594197, 0.31133685, 0.109)
+mesh = SubResource("CylinderMesh_xqly6")
