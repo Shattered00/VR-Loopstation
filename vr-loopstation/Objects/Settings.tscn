@@ -1,6 +1,5 @@
 [gd_scene format=3 uid="uid://comtnrv5b5t47"]
 
-[ext_resource type="Script" uid="uid://cto74ru0q5c1t" path="res://Objects/extrasettings.gd" id="1_et4ga"]
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="2_n0qgp"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_113lq"]
@@ -18,7 +17,6 @@ size = Vector3(0.5, 0.1, 0.1)
 
 [node name="Main track thing" type="Node3D" unique_id=980687278]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
-script = ExtResource("1_et4ga")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=563767679]
 mesh = SubResource("BoxMesh_113lq")

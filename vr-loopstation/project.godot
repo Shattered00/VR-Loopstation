@@ -15,7 +15,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="VR Loopstation"
-run/main_scene="uid://qtd35x1ssa0n"
+run/main_scene="uid://dai6n4h1s5wry"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
