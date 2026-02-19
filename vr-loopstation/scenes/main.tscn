@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://qtd35x1ssa0n"]
 
-[ext_resource type="Script" uid="uid://crrmqifibihsc" path="res://scenes/main.gd" id="1_jyhfs"]
-[ext_resource type="Script" uid="uid://dmn563q7ufve6" path="res://scenes/right.gd" id="2_jyhfs"]
-[ext_resource type="Script" uid="uid://dlpo56ykv6qar" path="res://scenes/left.gd" id="3_tbgi4"]
-[ext_resource type="Script" uid="uid://oo7n610c8r7e" path="res://scenes/audiocore.gd" id="5_tbgi4"]
-[ext_resource type="Script" uid="uid://dogcey6tojrqg" path="res://scenes/effects_button.gd" id="5_tefeu"]
+[ext_resource type="Script" uid="uid://crrmqifibihsc" path="res://scripts/main.gd" id="1_jyhfs"]
+[ext_resource type="Script" uid="uid://dmn563q7ufve6" path="res://scripts/right.gd" id="2_jyhfs"]
+[ext_resource type="Script" uid="uid://dlpo56ykv6qar" path="res://scripts/left.gd" id="3_tbgi4"]
+[ext_resource type="Script" uid="uid://oo7n610c8r7e" path="res://scripts/audiocore.gd" id="5_tbgi4"]
+[ext_resource type="Script" uid="uid://dogcey6tojrqg" path="res://scripts/effects_button.gd" id="5_tefeu"]
 
 [sub_resource type="Environment" id="Environment_jyhfs"]
 background_mode = 1
