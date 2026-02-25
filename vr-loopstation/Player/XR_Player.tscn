@@ -1,48 +1,36 @@
-[gd_scene load_steps=8 format=3 uid="uid://c5yoab8ubtuqt"]
+[gd_scene format=3 uid="uid://c5yoab8ubtuqt"]
 
-[ext_resource type="PackedScene" uid="uid://bx1xdisoqo1f6" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_tac_glove_low.tscn" id="1_ia538"]
-[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="2_miws7"]
-[ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="3_ajjs1"]
-[ext_resource type="PackedScene" uid="uid://cqhw276realc" path="res://addons/godot-xr-tools/functions/function_pointer.tscn" id="4_miws7"]
-[ext_resource type="PackedScene" uid="uid://chumpejwiub7f" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_tac_glove_low.tscn" id="4_yiwwu"]
-[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_n4274"]
+[ext_resource type="PackedScene" uid="uid://df5hynbooj1uj" path="res://addons/hand_pose_detector/hand_pose_detector.tscn" id="2_lv28q"]
+[ext_resource type="PackedScene" uid="uid://bh8isvqs258cp" path="res://addons/hand_pose_detector/hand_pose_controller.tscn" id="3_gs6up"]
+[ext_resource type="PackedScene" uid="uid://cjcehqrfoxav3" path="res://addons/hand_pose_detector/hands/LeftHandHumanoid.gltf" id="4_go7xp"]
+[ext_resource type="PackedScene" uid="uid://dabmoo0spa6vg" path="res://addons/hand_pose_detector/hands/RightHandHumanoid.gltf" id="5_bjj2r"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_jcx8g"]
 
-[node name="Player" type="XROrigin3D"]
+[node name="Player" type="XROrigin3D" unique_id=2024556462]
 
-[node name="XRCamera3D" type="XRCamera3D" parent="."]
+[node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=880922231]
 
-[node name="AudioListener3D" type="AudioListener3D" parent="XRCamera3D"]
+[node name="AudioListener3D" type="AudioListener3D" parent="XRCamera3D" unique_id=1335616900]
 current = true
 
-[node name="XR_Controller_LeftHand" type="XRController3D" parent="."]
+[node name="PlayerBody" parent="." unique_id=1894672210 instance=ExtResource("6_jcx8g")]
+
+[node name="UI_AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=115224921]
+
+[node name="left" type="XRNode3D" parent="." unique_id=573527997]
 tracker = &"left_hand"
 
-[node name="LeftHand" parent="XR_Controller_LeftHand" instance=ExtResource("1_ia538")]
+[node name="HandPoseDetector" parent="left" unique_id=566635915 instance=ExtResource("2_lv28q")]
 
-[node name="Directional Movement Override Control" parent="XR_Controller_LeftHand" instance=ExtResource("2_miws7")]
-strafe = true
+[node name="HandPoseController" parent="left" unique_id=1663184641 instance=ExtResource("3_gs6up")]
 
-[node name="FunctionPickup" parent="XR_Controller_LeftHand" instance=ExtResource("3_ajjs1")]
+[node name="LeftHandHumanoid2" parent="left" unique_id=2132848226 instance=ExtResource("4_go7xp")]
 
-[node name="FunctionPointer Right" parent="XR_Controller_LeftHand" instance=ExtResource("4_miws7")]
-laser_length = 1
-show_target = true
-
-[node name="XR_Controller_RightHand" type="XRController3D" parent="."]
+[node name="right" type="XRNode3D" parent="." unique_id=187713405]
 tracker = &"right_hand"
 
-[node name="RightHand" parent="XR_Controller_RightHand" instance=ExtResource("4_yiwwu")]
+[node name="HandPoseDetector" parent="right" unique_id=1358134822 instance=ExtResource("2_lv28q")]
 
-[node name="Rotation Override Control" parent="XR_Controller_RightHand" instance=ExtResource("5_n4274")]
-turn_mode = 2
+[node name="HandPoseController" parent="right" unique_id=1416883372 instance=ExtResource("3_gs6up")]
 
-[node name="FunctionPickup" parent="XR_Controller_RightHand" instance=ExtResource("3_ajjs1")]
-
-[node name="FunctionPointer Left" parent="XR_Controller_RightHand" instance=ExtResource("4_miws7")]
-laser_length = 1
-show_target = true
-
-[node name="PlayerBody" parent="." instance=ExtResource("6_jcx8g")]
-
-[node name="UI_AudioPlayer" type="AudioStreamPlayer" parent="."]
+[node name="RightHandHumanoid2" parent="right" unique_id=666684019 instance=ExtResource("5_bjj2r")]

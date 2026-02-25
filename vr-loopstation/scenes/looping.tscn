@@ -10,6 +10,8 @@ background_mode = 1
 ambient_light_source = 2
 ambient_light_color = Color(0.46618086, 0.4661808, 0.4661808, 1)
 
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_t82cb"]
+
 [node name="Node3D" type="Node3D" unique_id=1611743180]
 script = ExtResource("1_t82cb")
 
@@ -23,3 +25,9 @@ transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.18, -0.5181259, 0.54454947
 
 [node name="Main track thing" parent="." unique_id=980687278 instance=ExtResource("3_py5qd")]
 transform = Transform3D(0.2, 0, 0, 0, 0.19998954, -0.0020454903, 0, 0.0020454903, 0.19998954, 0.40211815, 0.3874781, -1.1935856)
+
+[node name="Floor" type="StaticBody3D" parent="." unique_id=1768972515]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1965374683]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+shape = SubResource("WorldBoundaryShape3D_t82cb")
