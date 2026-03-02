@@ -21,7 +21,7 @@ script = ExtResource("1_t82cb")
 environment = SubResource("Environment_no0p5")
 
 [node name="Trackholder" parent="." unique_id=470996291 instance=ExtResource("2_no0p5")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.18, -0.5181259, 0.54454947, 0)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.18, -0.5181259, 0.54454947, -0.7723558)
 
 [node name="Main track thing" parent="." unique_id=980687278 instance=ExtResource("3_py5qd")]
 transform = Transform3D(0.2, 0, 0, 0, 0.19998954, -0.0020454903, 0, 0.0020454903, 0.19998954, 0.40211815, 0.3874781, -1.1935856)

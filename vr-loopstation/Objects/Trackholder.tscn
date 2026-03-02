@@ -1,15 +1,10 @@
 [gd_scene format=3 uid="uid://dupkt08xhh7yt"]
 
-[ext_resource type="Script" uid="uid://b2d448wg2klkm" path="res://scripts/trackholder.gd" id="1_18to6"]
+[ext_resource type="Script" uid="uid://d4b4oesex2ctk" path="res://scripts/record_button.gd" id="1_lptc5"]
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_xqly6"]
+[ext_resource type="PackedScene" uid="uid://b3dulllw25i7r" path="res://Objects/recordbutton.tscn" id="2_inxy2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lptc5"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_18to6"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lptc5"]
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_18to6"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_inxy2"]
 
@@ -52,21 +47,15 @@ size = Vector3(0.05, 0.2, 0.08)
 
 [node name="Trackholder" type="Node3D" unique_id=470996291]
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.18, 0, 0, 0)
-script = ExtResource("1_18to6")
+script = ExtResource("1_lptc5")
+
+[node name="Record Button" parent="." unique_id=56461345 instance=ExtResource("2_inxy2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1047911349]
 
 [node name="Mainbody" type="MeshInstance3D" parent="." unique_id=1261838586]
 mesh = SubResource("BoxMesh_lptc5")
-
-[node name="Record Button" type="MeshInstance3D" parent="." unique_id=1400202958]
-transform = Transform3D(0.4, 0, 0, 0, -1.9670125e-08, -0.4, 0, 0.45, -1.7484556e-08, -0.20404243, -0.23919383, 0.10923513)
-mesh = SubResource("CylinderMesh_18to6")
-surface_material_override/0 = SubResource("StandardMaterial3D_lptc5")
-
-[node name="Area3D" type="Area3D" parent="Record Button" unique_id=2013293016]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Record Button/Area3D" unique_id=1610230885]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 3.5527137e-15, 1, 0, 0, 0)
-shape = SubResource("CylinderShape3D_18to6")
 
 [node name="Audio Level" type="MeshInstance3D" parent="." unique_id=1987768022]
 transform = Transform3D(0.2, 0, 0, 0, 0.15, 0, 0, 0, 0.3, 0.2510078, -0.27274945, 0.7792964)

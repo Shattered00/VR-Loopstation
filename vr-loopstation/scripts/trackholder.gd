@@ -5,7 +5,6 @@ signal interacted(control: Trackholder, hand: Node)
 
 @export var action_id: StringName
 
-
 var _locked := false
 
 func _ready():
@@ -20,3 +19,7 @@ func _on_area_entered(area: Area3D):
 	interacted.emit(self, area)
 
 	_locked = true
+
+
+func _on_area_3d_area_entered(area):
+	pass # Replace with function body.
