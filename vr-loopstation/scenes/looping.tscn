@@ -15,16 +15,16 @@ ambient_light_color = Color(0.46618086, 0.4661808, 0.4661808, 1)
 [node name="Node3D" type="Node3D" unique_id=1611743180]
 script = ExtResource("1_t82cb")
 
-[node name="Player" parent="." unique_id=1169519212 instance=ExtResource("1_2p2p4")]
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=14926954]
 environment = SubResource("Environment_no0p5")
 
 [node name="Trackholder" parent="." unique_id=470996291 instance=ExtResource("2_no0p5")]
-transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.18, -0.5181259, 0.54454947, -0.7723558)
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.18, -0.5181259, 1.2911676, -0.7723558)
 
 [node name="Main track thing" parent="." unique_id=980687278 instance=ExtResource("3_py5qd")]
-transform = Transform3D(0.2, 0, 0, 0, 0.19998954, -0.0020454903, 0, 0.0020454903, 0.19998954, 0.40211815, 0.3874781, -1.1935856)
+transform = Transform3D(0.2, 0, 0, 0, 0.19998954, -0.0020454903, 0, 0.0020454903, 0.19998954, 0.40211815, 0.8780335, -1.1935856)
+
+[node name="Player" parent="." unique_id=2024556462 instance=ExtResource("1_2p2p4")]
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=1768972515]
 

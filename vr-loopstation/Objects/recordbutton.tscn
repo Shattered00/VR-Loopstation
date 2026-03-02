@@ -8,7 +8,7 @@
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_h0k0p"]
 
-[node name="Node3D" type="Node3D" unique_id=56461345]
+[node name="Node3D" type="Area3D" unique_id=1325975995]
 script = ExtResource("1_bpv8p")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1341063884]
@@ -16,11 +16,9 @@ transform = Transform3D(0.4, 0, 0, 0, -1.9670125e-08, -0.4, 0, 0.45, -1.7484556e
 mesh = SubResource("CylinderMesh_6ebed")
 surface_material_override/0 = SubResource("StandardMaterial3D_dm8rr")
 
-[node name="Area3D" type="Area3D" parent="MeshInstance3D" unique_id=1851049413]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/Area3D" unique_id=1278821084]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 3.5527137e-15, 1, 0, 0, 0)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1278821084]
+transform = Transform3D(0.4, 0, 0, 0, -1.9670125e-08, -0.4, 0, 0.45, -1.7484554e-08, -0.20404243, -0.23919383, 0.10923513)
 shape = SubResource("CylinderShape3D_h0k0p")
 
-[connection signal="area_entered" from="MeshInstance3D/Area3D" to="MeshInstance3D/Area3D" method="_on_area_entered"]
-[connection signal="area_exited" from="MeshInstance3D/Area3D" to="MeshInstance3D/Area3D" method="_on_area_exited"]
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://c5yoab8ubtuqt"]
 
-[ext_resource type="PackedScene" uid="uid://df5hynbooj1uj" path="res://addons/hand_pose_detector/hand_pose_detector.tscn" id="2_lv28q"]
-[ext_resource type="PackedScene" uid="uid://bh8isvqs258cp" path="res://addons/hand_pose_detector/hand_pose_controller.tscn" id="3_gs6up"]
-[ext_resource type="PackedScene" uid="uid://cjcehqrfoxav3" path="res://addons/hand_pose_detector/hands/LeftHandHumanoid.gltf" id="4_go7xp"]
-[ext_resource type="PackedScene" uid="uid://dabmoo0spa6vg" path="res://addons/hand_pose_detector/hands/RightHandHumanoid.gltf" id="5_bjj2r"]
+[ext_resource type="PackedScene" uid="uid://d2tx6i231jey0" path="res://Player/lefthand.tscn" id="1_01bul"]
+[ext_resource type="Script" uid="uid://dwra10n8pcggi" path="res://Player/hand.gd" id="2_gs6up"]
+[ext_resource type="PackedScene" uid="uid://2sbfh0vki86s" path="res://Player/righthand.tscn" id="4_go7xp"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_jcx8g"]
 
 [node name="Player" type="XROrigin3D" unique_id=2024556462]
+
+[node name="left" parent="." unique_id=1803179956 instance=ExtResource("1_01bul")]
+script = ExtResource("2_gs6up")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=880922231]
 
@@ -17,20 +19,4 @@ current = true
 
 [node name="UI_AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=115224921]
 
-[node name="left" type="XRNode3D" parent="." unique_id=573527997]
-tracker = &"left_hand"
-
-[node name="HandPoseDetector" parent="left" unique_id=566635915 instance=ExtResource("2_lv28q")]
-
-[node name="HandPoseController" parent="left" unique_id=1663184641 instance=ExtResource("3_gs6up")]
-
-[node name="LeftHandHumanoid2" parent="left" unique_id=2132848226 instance=ExtResource("4_go7xp")]
-
-[node name="right" type="XRNode3D" parent="." unique_id=187713405]
-tracker = &"right_hand"
-
-[node name="HandPoseDetector" parent="right" unique_id=1358134822 instance=ExtResource("2_lv28q")]
-
-[node name="HandPoseController" parent="right" unique_id=1416883372 instance=ExtResource("3_gs6up")]
-
-[node name="RightHandHumanoid2" parent="right" unique_id=666684019 instance=ExtResource("5_bjj2r")]
+[node name="right" parent="." unique_id=781015106 instance=ExtResource("4_go7xp")]

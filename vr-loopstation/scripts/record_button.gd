@@ -42,15 +42,15 @@ func _on_area_entered(area: Area3D) -> void:
 		effect.set_recording_active(false)
 		recorded_stream = effect.get_recording()
 		recorded_stream.loop_mode = AudioStreamWAV.LoopMode.LOOP_FORWARD
-		$AudioStreamPlayer3D.stream = recorded_stream
-		$AudioStreamPlayer3D.play()
+		$AudioStreamPlayer.stream = recorded_stream
+		$AudioStreamPlayer.play()
 		state = RState.PLAYING
 		$MeshInstance3D.get_surface_override_material(0).albedo_color = play_color
 		recording_stopped.emit()
 		playback_started.emit()
 		
 	elif state == RState.PLAYING:
-		$AudioStreamPlayer3D.stop()
+		$AudioStreamPlayer.stop()
 		recorded_stream = null
 		state = RState.IDLE
 		$MeshInstance3D.get_surface_override_material(0).albedo_color = idle_color
