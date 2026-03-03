@@ -22,12 +22,13 @@ environment = SubResource("Environment_no0p5")
 transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.18, -0.5181259, 1.2911676, -0.7723558)
 
 [node name="Main track thing" parent="." unique_id=980687278 instance=ExtResource("3_py5qd")]
-transform = Transform3D(0.2, 0, 0, 0, 0.19998954, -0.0020454903, 0, 0.0020454903, 0.19998954, 0.40211815, 0.8780335, -1.1935856)
-
-[node name="Player" parent="." unique_id=2024556462 instance=ExtResource("1_2p2p4")]
+transform = Transform3D(0.2, 0, 0, 0, 0.19998954, -0.0020454903, 0, 0.0020454903, 0.19998954, 0.40211815, 1.1459202, -1.1935856)
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=1768972515]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1965374683]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 shape = SubResource("WorldBoundaryShape3D_t82cb")
+
+[node name="Player" parent="." unique_id=2024556462 instance=ExtResource("1_2p2p4")]
+transform = Transform3D(0.9999998, 0, 0, 0, 0.9999999, 9.313226e-10, 0, -9.313226e-10, 0.9999999, 8.940697e-08, 0, 0)

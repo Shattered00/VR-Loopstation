@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://d2tx6i231jey0"]
+[gd_scene format=3 uid="uid://ctjxunajh43s1"]
 
 [ext_resource type="Script" uid="uid://dwra10n8pcggi" path="res://Player/hand.gd" id="1_djnhv"]
 [ext_resource type="Script" uid="uid://cc0oyx7n5leec" path="res://addons/hand_pose_detector/hand_pose_detector.gd" id="3_s1er4"]
@@ -25,20 +25,24 @@ metadata/_custom_type_script = "uid://cmyxeshkakwd8"
 transparency = 1
 albedo_color = Color(1, 1, 1, 0.16078432)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ieg28"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_djnhv"]
 radius = 0.02
 height = 0.04
 
-[node name="left" type="XRNode3D" unique_id=1803179956]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yvybm"]
+radius = 0.02
+height = 0.04
+
+[node name="left" type="XRNode3D" unique_id=276527321]
 tracker = &"/user/hand_tracker/left"
 show_when_tracked = true
 script = ExtResource("1_djnhv")
 
-[node name="HandPoseDetector" type="Node" parent="." unique_id=137193287]
+[node name="HandPoseDetector" type="Node" parent="." unique_id=2021101601]
 script = ExtResource("3_s1er4")
 hand_pose_set = ExtResource("4_m24s6")
 
-[node name="HandPoseController" type="Node" parent="." unique_id=1605535869]
+[node name="HandPoseController" type="Node" parent="." unique_id=804834219]
 script = ExtResource("5_sqr5d")
 controller_pose_type = 2
 controller_action_map = SubResource("Resource_ex01c")
@@ -49,18 +53,26 @@ hand_pose_set = ExtResource("4_m24s6")
 [node name="LeftHandHumanoidMesh" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(777284774, 723885957) index="0" unique_id=313623700]
 surface_material_override/0 = SubResource("StandardMaterial3D_b7nf6")
 
-[node name="XRHandModifier3D" type="XRHandModifier3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(777284774, 723885957) index="1" unique_id=53170563]
+[node name="XRHandModifier3D" type="XRHandModifier3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(777284774, 723885957) index="1" unique_id=8927574]
 
-[node name="tip5" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(777284774, 723885957) index="2" unique_id=1868214663]
+[node name="tip5" type="BoneAttachment3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D" parent_id_path=PackedInt32Array(777284774, 723885957) index="2" unique_id=1864184842]
 transform = Transform3D(0.01489234, 0.39270008, 0.919546, -0.9930924, 0.11285266, -0.03211129, -0.11638325, -0.91271573, 0.39166808, -0.01110013, 0.04294307, -0.17161417)
 bone_name = "LeftIndexTip"
 bone_idx = 9
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5" unique_id=549341851]
+[node name="right_hand" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5" index="0" groups=["finger_tip"]]
+transform = Transform3D(1, 0, 0, 0, 1.0000002, 0, 0, 0, 1.0000004, 0, 0, 0)
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5/CharacterBody3D" unique_id=1667763548]
+[node name="CollisionShape3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5/right_hand" index="0"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.018, 0)
+shape = SubResource("CapsuleShape3D_djnhv")
+
+[node name="CharacterBody3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5" index="1"]
+transform = Transform3D(1, 2.2204441e-15, 0, 4.440892e-16, 1, 0, 0, -8.881784e-16, 1, 0, 0, 0)
+
+[node name="CollisionShape3D2" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5/CharacterBody3D" index="0"]
 transform = Transform3D(-3.7252903e-08, 0, 1, 2.9802322e-08, 1.0000002, 0, -1.0000005, -5.9604645e-08, -4.4703484e-08, 0.003736999, -0.010424666, 0.00012084842)
-shape = SubResource("CapsuleShape3D_ieg28")
+shape = SubResource("CapsuleShape3D_yvybm")
 
 [connection signal="pose_ended" from="HandPoseDetector" to="." method="_on_hand_pose_detector_pose_ended"]
 [connection signal="pose_started" from="HandPoseDetector" to="." method="_on_hand_pose_detector_pose_started"]
