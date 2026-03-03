@@ -60,17 +60,19 @@ transform = Transform3D(0.01489234, 0.39270008, 0.919546, -0.9930924, 0.11285266
 bone_name = "LeftIndexTip"
 bone_idx = 9
 
-[node name="right_hand" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5" index="0" groups=["finger_tip"]]
+[node name="right_hand" type="Area3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5" index="0" groups=["finger_tip"]]
 transform = Transform3D(1, 0, 0, 0, 1.0000002, 0, 0, 0, 1.0000004, 0, 0, 0)
 
-[node name="CollisionShape3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5/right_hand" index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5/right_hand" index="0"]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -0.018, 0)
 shape = SubResource("CapsuleShape3D_djnhv")
 
-[node name="CharacterBody3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5" index="1"]
+[node name="CharacterBody3D" type="CharacterBody3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5" index="1"]
+collision_layer = 0
+collision_mask = 0
 transform = Transform3D(1, 2.2204441e-15, 0, 4.440892e-16, 1, 0, 0, -8.881784e-16, 1, 0, 0, 0)
 
-[node name="CollisionShape3D2" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5/CharacterBody3D" index="0"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D/tip5/CharacterBody3D" index="0"]
 transform = Transform3D(-3.7252903e-08, 0, 1, 2.9802322e-08, 1.0000002, 0, -1.0000005, -5.9604645e-08, -4.4703484e-08, 0.003736999, -0.010424666, 0.00012084842)
 shape = SubResource("CapsuleShape3D_yvybm")
 

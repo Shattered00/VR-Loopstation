@@ -1,14 +1,12 @@
 [gd_scene format=3 uid="uid://c5yoab8ubtuqt"]
 
-[ext_resource type="PackedScene" uid="uid://d2tx6i231jey0" path="res://Player/lefthand.tscn" id="1_01bul"]
-[ext_resource type="Script" uid="uid://dwra10n8pcggi" path="res://Player/hand.gd" id="2_gs6up"]
+[ext_resource type="PackedScene" uid="uid://ctjxunajh43s1" path="res://Player/lefthand.tscn" id="1_01bul"]
 [ext_resource type="PackedScene" uid="uid://2sbfh0vki86s" path="res://Player/righthand.tscn" id="4_go7xp"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="6_jcx8g"]
 
 [node name="Player" type="XROrigin3D" unique_id=2024556462]
 
 [node name="left" parent="." unique_id=1803179956 instance=ExtResource("1_01bul")]
-script = ExtResource("2_gs6up")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="." unique_id=880922231]
 
@@ -17,6 +15,6 @@ current = true
 
 [node name="PlayerBody" parent="." unique_id=1894672210 instance=ExtResource("6_jcx8g")]
 
-[node name="UI_AudioPlayer" type="AudioStreamPlayer" parent="." unique_id=115224921]
-
 [node name="right" parent="." unique_id=781015106 instance=ExtResource("4_go7xp")]
+
+[node name="AudioListener3D" type="AudioListener3D" parent="." unique_id=860046039]

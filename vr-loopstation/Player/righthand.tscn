@@ -78,6 +78,8 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -
 shape = SubResource("CapsuleShape3D_p0kt0")
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="RightHandHumanoid2/RightHandHumanoid/Skeleton3D/tip5" unique_id=535410159]
+collision_layer = 0
+collision_mask = 0
 transform = Transform3D(1, 2.2204441e-15, 0, 4.440892e-16, 1, 0, 0, -8.881784e-16, 1, 0, 0, 0)
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="RightHandHumanoid2/RightHandHumanoid/Skeleton3D/tip5/CharacterBody3D" unique_id=1291815887]

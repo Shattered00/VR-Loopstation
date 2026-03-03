@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bmq1kqjhbifbm"]
+
+[ext_resource type="Script" uid="uid://dmxyx16h38r5y" path="res://scripts/audio_slider.gd" id="1_vafgq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_slider"]
+size = Vector3(0.2, 0.15, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_inxy2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slider"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lptc5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nraq1"]
+albedo_color = Color(0, 0, 0, 1)
+
+[node name="AudioSlider" type="Node3D" unique_id=2004782510]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
+script = ExtResource("1_vafgq")
+
+[node name="grab" type="Area3D" parent="." unique_id=1349688037]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="grab" unique_id=2102528119]
+shape = SubResource("BoxShape3D_slider")
+
+[node name="mesh" type="MeshInstance3D" parent="grab" unique_id=1636048633]
+transform = Transform3D(0.2, 0, 0, 0, 0.15, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("BoxMesh_inxy2")
+surface_material_override/0 = SubResource("StandardMaterial3D_slider")
+
+[node name="rod" type="MeshInstance3D" parent="." unique_id=1003807133]
+transform = Transform3D(0.03, 0, 0, 0, 0.3, 0, 0, 0, 0.03, 0, 0.15, 0)
+mesh = SubResource("BoxMesh_lptc5")
+surface_material_override/0 = SubResource("StandardMaterial3D_nraq1")
+
+[connection signal="area_entered" from="grab" to="." method="_on_grab_area_entered"]
+[connection signal="area_exited" from="grab" to="." method="_on_grab_area_exited"]
