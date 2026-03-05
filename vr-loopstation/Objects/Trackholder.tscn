@@ -3,14 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_xqly6"]
 [ext_resource type="PackedScene" uid="uid://b3dulllw25i7r" path="res://Objects/recordbutton.tscn" id="2_inxy2"]
 [ext_resource type="PackedScene" uid="uid://bmq1kqjhbifbm" path="res://Objects/audio_slider.tscn" id="2_lptc5"]
+[ext_resource type="PackedScene" uid="uid://dh2bhjw36r46g" path="res://Objects/stop_button.tscn" id="3_inxy2"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lptc5"]
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_1qprc"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w3wpe"]
-
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_lptc5"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_18to6"]
 size = Vector3(0.5, 0.1, 0.1)
@@ -49,15 +44,8 @@ mesh = SubResource("BoxMesh_lptc5")
 [node name="AudioSlider" parent="." unique_id=2004782510 instance=ExtResource("2_lptc5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0.2510078, -0.27274945, 0.5220666)
 
-[node name="Stop Button" type="MeshInstance3D" parent="." unique_id=131372106]
-transform = Transform3D(0.2, 0, 0, 0, -1.9670125e-08, -0.2, 0, 0.45, -8.742278e-09, -0.3272836, 0.16172901, 0.109)
-mesh = SubResource("CylinderMesh_1qprc")
-surface_material_override/0 = SubResource("StandardMaterial3D_w3wpe")
-
-[node name="Area3D" type="Area3D" parent="Stop Button" unique_id=1070887226]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Stop Button/Area3D" unique_id=492143358]
-shape = SubResource("CylinderShape3D_lptc5")
+[node name="Stop Button" parent="." unique_id=1517744940 instance=ExtResource("3_inxy2")]
+transform = Transform3D(0.2, 0, 0, 0, -1.9670123e-08, -0.2, 0, 0.44999996, -8.742278e-09, -0.32728362, 0.16172902, 0.10899998)
 
 [node name="Object Grip Move" parent="." unique_id=251020461 instance=ExtResource("1_xqly6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042144682, 0.69768333, -0.04905939)

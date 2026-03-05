@@ -1,4 +1,4 @@
-extends Node3D
+extends Area3D
 
 var idle_color: Color
 var record_color: Color
@@ -11,6 +11,7 @@ var recorded_frames: PackedVector2Array = []
 var _in_contact := false
 
 var _bake_thread: Thread = null
+var _is_paused := false
 
 # Layer management
 var _layers: Array[AudioStreamPlayer] = []
@@ -57,6 +58,7 @@ func _on_area_entered(area: Area3D) -> void:
 	_in_contact = true
 
 	if state == RState.IDLE:
+		_is_paused = false  # Clear any stale pause from stop button touches in idle
 		recorded_frames.clear()
 		state = RState.RECORDING
 		$MeshInstance3D.get_surface_override_material(0).albedo_color = record_color
@@ -70,7 +72,7 @@ func _on_area_entered(area: Area3D) -> void:
 		_bake_thread.start(_bake_wav)
 
 	elif state == RState.PLAYING:
-		# Start recording a new layer on top
+		# Layers continue playing; start recording a new layer on top
 		recorded_frames.clear()
 		state = RState.RECORDING
 		$MeshInstance3D.get_surface_override_material(0).albedo_color = record_color
@@ -112,12 +114,61 @@ func _bake_wav() -> void:
 	new_wav.data = byte_array
 	call_deferred("_start_playback", new_wav, is_master)
 
+func pause() -> void:
+	_is_paused = true
+	for player in _layers:
+		player.volume_db = -80.0
+
+func resume() -> void:
+	_is_paused = false
+	var slider = get_parent().get_node_or_null("AudioSlider")
+	var db = 0.0
+	if slider:
+		var v = slider.value
+		db = -80.0 if v <= 0.001 else linear_to_db(v)
+	for player in _layers:
+		player.volume_db = db
+		player.play()
+
+func stop() -> void:
+	_is_paused = false
+	if _bake_thread and _bake_thread.is_alive():
+		_bake_thread.wait_to_finish()
+
+	# Stop and free all dynamically spawned layers (2+)
+	for player in _layers:
+		player.stop()
+		if player != $AudioStreamPlayer:
+			player.queue_free()
+	_layers.clear()
+
+	# Reset master loop state
+	_master_sample_count = 0
+	_master_start_time = 0.0
+	recorded_frames.clear()
+	state = RState.IDLE
+	$MeshInstance3D.get_surface_override_material(0).albedo_color = idle_color
+
+	# Restart generator so mic input keeps draining; reset volume to default
+	$AudioStreamPlayer.volume_db = 0.0
+	var gen = AudioStreamGenerator.new()
+	gen.mix_rate = AudioServer.get_input_mix_rate()
+	gen.buffer_length = 0.1
+	$AudioStreamPlayer.stream = gen
+	$AudioStreamPlayer.play()
+
+	playback_stopped.emit()
+
 func set_volume(v: float) -> void:
 	var db = -80.0 if v <= 0.001 else linear_to_db(v)
 	for player in _layers:
 		player.volume_db = db
 
 func _start_playback(new_wav: AudioStreamWAV, is_master: bool) -> void:
+	# Guard against stale deferred calls after stop()
+	if state == RState.IDLE:
+		return
+
 	if _bake_thread and _bake_thread.is_alive():
 		_bake_thread.wait_to_finish()
 
@@ -133,6 +184,18 @@ func _start_playback(new_wav: AudioStreamWAV, is_master: bool) -> void:
 
 	_layers.append(player)
 	player.stream = new_wav
+
+	# Apply current slider volume (prevents muting from prior pause state)
+	var slider = get_parent().get_node_or_null("AudioSlider")
+	if slider:
+		var v = slider.value
+		player.volume_db = -80.0 if v <= 0.001 else linear_to_db(v)
+	else:
+		player.volume_db = 0.0
+
+	# If pause button is still held, keep this new layer muted too
+	if _is_paused:
+		player.volume_db = -80.0
 
 	if is_master:
 		player.play()

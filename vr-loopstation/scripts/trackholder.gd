@@ -8,7 +8,7 @@ signal interacted(control: Trackholder, hand: Node)
 var _locked := false
 
 func _ready():
-	add_to_group(&"trackholder") 
+	add_to_group(&"trackholder")
 
 func _on_area_entered(area: Area3D):
 	if _locked:
