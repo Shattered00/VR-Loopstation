@@ -14,12 +14,12 @@ var previous_value: float = -1.0
 @onready var collision_shape: CollisionShape3D = $grab/CollisionShape3D
 var default_shape_size: Vector3
 
-var _audio_player: AudioStreamPlayer = null
+var _record_button = null
 
 signal value_changed(new_value: float)
 
 func _ready() -> void:
-	_audio_player = get_parent().get_node_or_null("Record Button/AudioStreamPlayer")
+	_record_button = get_parent().get_node_or_null("Record Button")
 
 	start_local = $grab.position.y
 	end_local = start_local + height
@@ -33,11 +33,8 @@ func _ready() -> void:
 
 
 func _apply_volume(v: float) -> void:
-	if _audio_player:
-		if v <= 0.001:
-			_audio_player.volume_db = -80.0
-		else:
-			_audio_player.volume_db = linear_to_db(v)
+	if _record_button:
+		_record_button.set_volume(v)
 
 
 func _on_grab_area_entered(area: Area3D) -> void:
