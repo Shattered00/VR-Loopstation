@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://b3dulllw25i7r" path="res://Objects/recordbutton.tscn" id="2_inxy2"]
 [ext_resource type="PackedScene" uid="uid://bmq1kqjhbifbm" path="res://Objects/audio_slider.tscn" id="2_lptc5"]
 [ext_resource type="PackedScene" uid="uid://dh2bhjw36r46g" path="res://Objects/stop_button.tscn" id="3_inxy2"]
+[ext_resource type="PackedScene" uid="uid://bfllqjloqfyyk" path="res://Objects/loop_length.tscn" id="5_amlny"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_lptc5"]
 
@@ -98,3 +99,5 @@ surface_material_override/0 = SubResource("StandardMaterial3D_18to6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TrackFX/Area3D" unique_id=1454047177]
 shape = SubResource("CylinderShape3D_w3wpe")
+
+[node name="Loop Length" parent="." unique_id=439387802 instance=ExtResource("5_amlny")]
