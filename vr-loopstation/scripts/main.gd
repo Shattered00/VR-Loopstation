@@ -15,14 +15,12 @@ func enable_passthrough() -> bool:
 			return false
 			
 func _ready():
+	AudioServer.set_input_device_active(true)
 	xr_interface = XRServer.primary_interface
 	if xr_interface and xr_interface.is_initialized():
 		print("OpenXR initialised successfully")
 
-		# Turn off v-sync!
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
-
-		# Change our main viewport to output to the HMD
 		get_viewport().use_xr = true
 		enable_passthrough()
 
@@ -31,4 +29,12 @@ func _ready():
 		print("XR_Interface is initialised?: ", xr_interface.is_initialized())
 		print("XR_Interface capabilities (0 is bad): ", xr_interface.get_capabilities())
 		print("OpenXR not initialized, please check if your headset is connected")
-		
+
+# Read mic once per frame and push to every record button
+func _process(_delta) -> void:
+	var available = AudioServer.get_input_frames_available()
+	if available == 0:
+		return
+	var frames = AudioServer.get_input_frames(available)
+	for rb in get_tree().get_nodes_in_group("record_buttons"):
+		rb.receive_mic_frames(frames)

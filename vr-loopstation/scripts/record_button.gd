@@ -24,7 +24,6 @@ signal recording_stopped
 signal playback_started
 signal playback_stopped
 
-# Set up button colours, mic input
 func _ready() -> void:
 	idle_color = Color(0.2, 0.2, 0.2, 1)
 	record_color = Color(1, 0, 0, 1)
@@ -40,25 +39,14 @@ func _ready() -> void:
 	gen.buffer_length = 0.1
 	$AudioStreamPlayer.stream = gen
 	$AudioStreamPlayer.play()
+	add_to_group("record_buttons")
 
-	AudioServer.set_input_device_active(true)
+func receive_mic_frames(frames: PackedVector2Array) -> void:
+	if state == RState.RECORDING:
+		recorded_frames.append_array(frames)
+		if _master_sample_count > 0 and recorded_frames.size() >= _master_sample_count:
+			_finish_recording()
 
-# Every frame, pull mic frames out of the buffer
-# Only save them when actively recording
-# Auto-ends a layer recording once a full loop has been captured
-func _process(_delta) -> void:
-	var available = AudioServer.get_input_frames_available()
-	if available > 0:
-		var frames = AudioServer.get_input_frames(available)
-		if state == RState.RECORDING:
-			recorded_frames.append_array(frames)
-			if _master_sample_count > 0 and recorded_frames.size() >= _master_sample_count:
-				_finish_recording()
-
-# Finger touches the button
-# If idle, start recording
-# If recording, stop and bake to WAV
-# If playing, keep layers going and start recording a new layer
 func _on_area_entered(area: Area3D) -> void:
 	if not area.is_in_group("finger_tip"):
 		return
@@ -145,7 +133,6 @@ func _bake_wav() -> void:
 	new_wav.data = byte_array
 	call_deferred("_start_playback", new_wav, is_master)
 
-# Pause all layers at their current position
 func pause() -> void:
 	_is_paused = true
 	for player in _layers:
@@ -198,7 +185,6 @@ func get_loop_progress() -> float:
 	var duration = _master_sample_count / float(AudioServer.get_input_mix_rate())
 	return fmod(Time.get_ticks_msec() / 1000.0 - _master_start_time, duration) / duration
 
-# Set volume on all layers from the slider value
 func set_volume(v: float) -> void:
 	var db = -80.0 if v <= 0.001 else linear_to_db(v)
 	for player in _layers:

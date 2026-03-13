@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://doo8c3tmfdakb"]
+
+[ext_resource type="Script" uid="uid://1reogs7osana" path="res://scripts/grip_handle.gd" id="1_5yi8g"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_18to6"]
+size = Vector3(0.5, 0.1, 0.1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_inxy2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_18to6"]
+
+[node name="Grab" type="Area3D" unique_id=1866315998]
+script = ExtResource("1_5yi8g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1390262549]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.043404195, 0, 0.060423534)
+mesh = SubResource("BoxMesh_18to6")
+surface_material_override/0 = SubResource("StandardMaterial3D_inxy2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=33700693]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.4999999, -0.043404195, 0, 0.060423523)
+shape = SubResource("BoxShape3D_18to6")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

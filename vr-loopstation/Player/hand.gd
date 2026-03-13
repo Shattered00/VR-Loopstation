@@ -1,11 +1,14 @@
 extends XRNode3D
 
-var gesture:String
+var gesture: String = ""
 
+func _ready():
+	add_to_group("hands")
 
+# Track the current hand pose
 func _on_hand_pose_detector_pose_started(p_name: String) -> void:
-	pass # Replace with function body.
-
+	gesture = p_name
 
 func _on_hand_pose_detector_pose_ended(p_name: String) -> void:
-	pass # Replace with function body.
+	if gesture == p_name:
+		gesture = ""

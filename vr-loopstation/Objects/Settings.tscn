@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://comtnrv5b5t47"]
 
-[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="2_n0qgp"]
+[ext_resource type="PackedScene" uid="uid://doo8c3tmfdakb" path="res://Objects/grab.tscn" id="1_et4ga"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_113lq"]
 size = Vector3(6, 1.8, 0.4)
@@ -9,11 +9,6 @@ size = Vector3(6, 1.8, 0.4)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_et4ga"]
 albedo_color = Color(1, 0.84313726, 0.84313726, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_pdnyi"]
-size = Vector3(0.5, 0.1, 0.1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ytlsr"]
 
 [node name="Main track thing" type="Node3D" unique_id=980687278]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
@@ -72,10 +67,5 @@ transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
-[node name="Grab to move" parent="." unique_id=1616759250 instance=ExtResource("2_n0qgp")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042144682, 1.1442589, -0.04905939)
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Grab to move" unique_id=103363322]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.043404195, 0, 0.060423534)
-mesh = SubResource("BoxMesh_pdnyi")
-surface_material_override/0 = SubResource("StandardMaterial3D_ytlsr")
+[node name="Grab" parent="." unique_id=1866315998 instance=ExtResource("1_et4ga")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0612323, 0)

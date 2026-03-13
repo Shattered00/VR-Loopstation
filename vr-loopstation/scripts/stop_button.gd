@@ -4,9 +4,6 @@ var _trigger_items := {}
 var _hold_timer: SceneTreeTimer = null
 var _track_paused := false
 
-func _ready() -> void:
-	pass
-# Finger enters button area
 func _on_area_entered(area: Area3D) -> void:
 	if not area.is_in_group("finger_tip"):
 		return
@@ -35,7 +32,6 @@ func _on_hold_complete() -> void:
 		_track_paused = false
 		get_parent().get_node("Record Button").stop()
 
-# Finger leaves area, button remains paused
 func _on_area_exited(area: Area3D) -> void:
 	if not area.is_in_group("finger_tip"):
 		return
