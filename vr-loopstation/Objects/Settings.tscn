@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://comtnrv5b5t47"]
 
 [ext_resource type="PackedScene" uid="uid://doo8c3tmfdakb" path="res://Objects/grab.tscn" id="1_et4ga"]
+[ext_resource type="Script" uid="uid://cto74ru0q5c1t" path="res://scripts/extrasettings.gd" id="2_sttgs"]
+[ext_resource type="PackedScene" uid="uid://cyejacy2yoky0" path="res://Objects/FloatingMenu.tscn" id="3_fmenu"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_113lq"]
 size = Vector3(6, 1.8, 0.4)
@@ -10,8 +12,11 @@ size = Vector3(6, 1.8, 0.4)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_et4ga"]
 albedo_color = Color(1, 0.84313726, 0.84313726, 1)
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_btn"]
+
 [node name="Main track thing" type="Node3D" unique_id=980687278]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0)
+script = ExtResource("2_sttgs")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=563767679]
 mesh = SubResource("BoxMesh_113lq")
@@ -52,20 +57,73 @@ transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
+[node name="Area3D" type="Area3D" parent="TrackFX1" unique_id=100000001]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TrackFX1/Area3D" unique_id=100000002]
+shape = SubResource("CylinderShape3D_btn")
+
 [node name="TrackFX2" type="MeshInstance3D" parent="." unique_id=201062004]
 transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 1.8963876, 0.3781187, 0.12853438)
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
+
+[node name="Area3D" type="Area3D" parent="TrackFX2" unique_id=100000003]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TrackFX2/Area3D" unique_id=100000004]
+shape = SubResource("CylinderShape3D_btn")
 
 [node name="TrackFX3" type="MeshInstance3D" parent="." unique_id=566106272]
 transform = Transform3D(0.19993989, 0.0009779905, 0.004804745, 0.004809428, -0.0009574825, -0.19993988, -0.00095469283, 0.19999532, -0.0009807138, 2.2879808, 0.3781187, 0.12853438)
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
+[node name="Area3D" type="Area3D" parent="TrackFX3" unique_id=100000005]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TrackFX3/Area3D" unique_id=100000006]
+shape = SubResource("CylinderShape3D_btn")
+
 [node name="TrackFX4" type="MeshInstance3D" parent="." unique_id=27022612]
 transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 2.6625993, 0.3781187, 0.12853438)
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
+[node name="Area3D" type="Area3D" parent="TrackFX4" unique_id=100000007]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TrackFX4/Area3D" unique_id=100000008]
+shape = SubResource("CylinderShape3D_btn")
+
 [node name="Grab" parent="." unique_id=1866315998 instance=ExtResource("1_et4ga")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0612323, 0)
+
+[node name="OpenUIbutton" type="MeshInstance3D" parent="." unique_id=88670933]
+transform = Transform3D(0.20000002, 0, 0, 0, -8.742278e-09, -0.20000002, 0, 0.20000002, -8.742278e-09, -1.0558525, -0.25358045, 0.12853438)
+mesh = SubResource("CylinderMesh_113lq")
+surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
+
+[node name="Area3D" type="Area3D" parent="OpenUIbutton" unique_id=100000009]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="OpenUIbutton/Area3D" unique_id=100000010]
+shape = SubResource("CylinderShape3D_btn")
+
+[node name="Knob1" type="MeshInstance3D" parent="." unique_id=240727065]
+transform = Transform3D(0.3, 0, 0, 0, -1.3113417e-08, -0.3, 0, 0.3, -1.3113417e-08, -2.7571943, 0.7132, 0.12853438)
+mesh = SubResource("CylinderMesh_113lq")
+surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
+
+[node name="Area3D" type="Area3D" parent="Knob1" unique_id=100000011]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Knob1/Area3D" unique_id=100000012]
+shape = SubResource("CylinderShape3D_btn")
+
+[node name="Knob2" type="MeshInstance3D" parent="." unique_id=755140512]
+transform = Transform3D(0.3, 0, 0, 0, -1.3113417e-08, -0.3, 0, 0.3, -1.3113417e-08, 2.5930562, 0.7132, 0.12853438)
+mesh = SubResource("CylinderMesh_113lq")
+surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
+
+[node name="Area3D" type="Area3D" parent="Knob2" unique_id=100000013]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Knob2/Area3D" unique_id=100000014]
+shape = SubResource("CylinderShape3D_btn")
+
+[node name="FloatingMenu" parent="." unique_id=1461941747 instance=ExtResource("3_fmenu")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1.1819327)

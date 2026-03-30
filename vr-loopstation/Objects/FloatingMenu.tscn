@@ -1,0 +1,98 @@
+[gd_scene format=3 uid="uid://cyejacy2yoky0"]
+
+[ext_resource type="Script" uid="uid://8t3fmkuv7h0u" path="res://scripts/floating_menu.gd" id="1_fm"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_4mn8j"]
+resource_local_to_scene = true
+size = Vector2(0.7, 0.5)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_4mn8j"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d5g55"]
+resource_local_to_scene = true
+transparency = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = SubResource("ViewportTexture_4mn8j")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sbgdc"]
+
+[node name="FloatingMenu" type="Node3D" unique_id=1441042325]
+script = ExtResource("1_fm")
+
+[node name="Panel" type="MeshInstance3D" parent="." unique_id=885143715]
+mesh = SubResource("QuadMesh_4mn8j")
+surface_material_override/0 = SubResource("StandardMaterial3D_d5g55")
+
+[node name="SubViewport" type="SubViewport" parent="." unique_id=442994867]
+transparent_bg = true
+size = Vector2i(700, 500)
+render_target_update_mode = 4
+
+[node name="Control" type="Control" parent="SubViewport" unique_id=1410142437]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="SubViewport/Control" unique_id=15957635]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.12, 0.85)
+
+[node name="MarginContainer" type="MarginContainer" parent="SubViewport/Control/ColorRect" unique_id=92225789]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/Control/ColorRect/MarginContainer" unique_id=1071059800]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleBar" type="HBoxContainer" parent="SubViewport/Control/ColorRect/MarginContainer/VBoxContainer" unique_id=8812017]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="SubViewport/Control/ColorRect/MarginContainer/VBoxContainer/TitleBar" unique_id=749356713]
+visible = false
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "← Back"
+
+[node name="Title" type="Label" parent="SubViewport/Control/ColorRect/MarginContainer/VBoxContainer/TitleBar" unique_id=1677173270]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
+text = "Menu"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="SubViewport/Control/ColorRect/MarginContainer/VBoxContainer" unique_id=336359228]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SubViewport/Control/ColorRect/MarginContainer/VBoxContainer" unique_id=1225635947]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ButtonGrid" type="GridContainer" parent="SubViewport/Control/ColorRect/MarginContainer/VBoxContainer/ScrollContainer" unique_id=430670121]
+layout_mode = 2
+size_flags_horizontal = 3
+columns = 3
+
+[node name="Area3D" type="Area3D" parent="." unique_id=691926667]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=144275315]
+transform = Transform3D(0.7, 0, 0, 0, 0.5, 0, 0, 0, 0.02, 0, 0, 0)
+shape = SubResource("BoxShape3D_sbgdc")
