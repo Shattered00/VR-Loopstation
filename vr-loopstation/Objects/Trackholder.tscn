@@ -1,21 +1,44 @@
 [gd_scene format=3 uid="uid://dupkt08xhh7yt"]
 
-[ext_resource type="Script" uid="uid://trackholder_gd" path="res://scripts/trackholder.gd" id="1_tkhld"]
+[ext_resource type="Script" uid="uid://b2d448wg2klkm" path="res://scripts/trackholder.gd" id="1_tkhld"]
 [ext_resource type="PackedScene" uid="uid://b3dulllw25i7r" path="res://Objects/recordbutton.tscn" id="2_inxy2"]
 [ext_resource type="PackedScene" uid="uid://bmq1kqjhbifbm" path="res://Objects/audio_slider.tscn" id="2_lptc5"]
 [ext_resource type="PackedScene" uid="uid://dh2bhjw36r46g" path="res://Objects/stop_button.tscn" id="3_inxy2"]
 [ext_resource type="PackedScene" uid="uid://doo8c3tmfdakb" path="res://Objects/grab.tscn" id="4_amlny"]
 [ext_resource type="PackedScene" uid="uid://bfllqjloqfyyk" path="res://Objects/loop_length.tscn" id="5_amlny"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w3wpe"]
+shading_mode = 0
+specular_mode = 1
+disable_specular_occlusion = true
+albedo_color = Color(0.16958767, 0.16958767, 0.16958767, 1)
+texture_filter = 0
+
 [sub_resource type="BoxMesh" id="BoxMesh_lptc5"]
+material = SubResource("StandardMaterial3D_w3wpe")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nraq1"]
+albedo_color = Color(0.43961945, 0.8385598, 0.31296945, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_amlny"]
+material = SubResource("StandardMaterial3D_nraq1")
 size = Vector3(0.05, 0.2, 0.08)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1qprc"]
+albedo_color = Color(0.4392157, 0.8392157, 0.3137255, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_nraq1"]
+material = SubResource("StandardMaterial3D_1qprc")
 size = Vector3(0.05, 0.2, 0.08)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_inxy2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmx6c"]
+albedo_color = Color(0.7921569, 0.3254902, 0.7529412, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wsxn6"]
+material = SubResource("StandardMaterial3D_dmx6c")
+size = Vector3(0.05, 0.2, 0.08)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_amlny"]
 
@@ -62,7 +85,7 @@ shape = SubResource("BoxShape3D_inxy2")
 
 [node name="Remove" type="MeshInstance3D" parent="." unique_id=94388709]
 transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0, 0, 0, 1, -0.594, 0.698, 0.002)
-mesh = SubResource("BoxMesh_nraq1")
+mesh = SubResource("BoxMesh_wsxn6")
 
 [node name="Area3D" type="Area3D" parent="Remove" unique_id=1069800332]
 
