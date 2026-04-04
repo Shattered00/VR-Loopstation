@@ -76,9 +76,17 @@ func _main_menu() -> Dictionary:
 	}
 
 
+func _sorted_tracks() -> Array:
+	var tracks := get_tree().get_nodes_in_group("trackholders")
+	tracks.sort_custom(func(a: Node, b: Node) -> bool:
+		return (a as Node3D).global_position.x < (b as Node3D).global_position.x
+	)
+	return tracks
+
+
 func _track_select_menu() -> Dictionary:
 	var items: Array = []
-	var tracks := get_tree().get_nodes_in_group("trackholders")
+	var tracks := _sorted_tracks()
 	for i in range(tracks.size()):
 		items.append({
 			"label":    "Track %d" % (i + 1),
@@ -100,11 +108,11 @@ func _fx_slots_menu() -> Dictionary:
 		})
 	var track_label := "Track"
 	if _active_track != null and is_instance_valid(_active_track):
-		var tracks := get_tree().get_nodes_in_group("trackholders")
+		var tracks := _sorted_tracks()
 		var idx    := tracks.find(_active_track)
 		if idx != -1:
 			track_label = "Track %d" % (idx + 1)
-	return {"title": "%s FX" % track_label, "items": items}
+	return {"id": "fx_slots", "title": "%s FX" % track_label, "items": items}
 
 
 func _effect_picker(slot: int) -> Dictionary:
@@ -126,14 +134,18 @@ func _go_to(menu: Dictionary) -> void:
 
 func _go_back() -> void:
 	if _nav_stack.size() <= 1:
+		hide_menu()
 		return
+	if (_nav_stack.back() as Dictionary).get("id", "") == "fx_slots":
+		_active_track = null
+		get_parent().set_selected_track(null)
 	_nav_stack.pop_back()
 	_refresh_menu(_nav_stack.back())
 
 
 func _refresh_menu(menu: Dictionary) -> void:
 	_title.text       = menu["title"]
-	_back_btn.visible = _nav_stack.size() > 1
+	_back_btn.visible = true
 	for child in _grid.get_children():
 		child.queue_free()
 	for item in menu["items"]:

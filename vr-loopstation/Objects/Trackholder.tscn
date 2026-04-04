@@ -32,6 +32,11 @@ script = ExtResource("1_tkhld")
 [node name="Record Button" parent="." unique_id=56461345 instance=ExtResource("2_inxy2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
+[node name="Label3D" type="Label3D" parent="Record Button" unique_id=676146251]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.19821183, -0.2353698, 0.5953754)
+text = "Record/Play
+"
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1047911349]
 
 [node name="Mainbody" type="MeshInstance3D" parent="." unique_id=1261838586]
@@ -51,9 +56,8 @@ text = "Pause/Hold 2 secs to clear"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042144682, 0.69768333, -0.04905939)
 
 [node name="Label3D" type="Label3D" parent="Grab" unique_id=1267568879]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999934, -0.023362834, 0.004902303, 0.12706591)
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, -0.023362834, 0.004902303, 0.12706591)
 text = "Make a fist to grab and move"
-font_size = 8
 
 [node name="Add" type="MeshInstance3D" parent="." unique_id=32250768]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.594, 0.698, 0.002)
