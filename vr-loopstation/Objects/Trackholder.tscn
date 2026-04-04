@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dupkt08xhh7yt"]
 
-[ext_resource type="Script" uid="uid://trackholder_gd" path="res://scripts/trackholder.gd" id="1_tkhld"]
+[ext_resource type="Script" uid="uid://b2d448wg2klkm" path="res://scripts/trackholder.gd" id="1_tkhld"]
 [ext_resource type="PackedScene" uid="uid://b3dulllw25i7r" path="res://Objects/recordbutton.tscn" id="2_inxy2"]
 [ext_resource type="PackedScene" uid="uid://bmq1kqjhbifbm" path="res://Objects/audio_slider.tscn" id="2_lptc5"]
 [ext_resource type="PackedScene" uid="uid://dh2bhjw36r46g" path="res://Objects/stop_button.tscn" id="3_inxy2"]
@@ -41,10 +41,19 @@ mesh = SubResource("BoxMesh_lptc5")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0.2510078, -0.27274945, 0.5220666)
 
 [node name="Stop Button" parent="." unique_id=1517744940 instance=ExtResource("3_inxy2")]
-transform = Transform3D(0.2, 0, 0, 0, -1.9670123e-08, -0.2, 0, 0.44999996, -8.742278e-09, -0.32728362, 0.16172902, 0.10899998)
+transform = Transform3D(0.2, 0, 0, 0, -1.9670125e-08, -0.2, 0, 0.4499999, -8.742277e-09, -0.2997594, 0.16172902, 0.108999975)
+
+[node name="Label3D" type="Label3D" parent="Stop Button" unique_id=1127800732]
+transform = Transform3D(1, 0, 0, 0, -4.3711374e-08, 0.9999995, 0, -0.9999998, -4.371136e-08, 0.04557669, 0.87, -0.70000017)
+text = "Pause/Hold 2 secs to clear"
 
 [node name="Grab" parent="." unique_id=1866315998 instance=ExtResource("4_amlny")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042144682, 0.69768333, -0.04905939)
+
+[node name="Label3D" type="Label3D" parent="Grab" unique_id=1267568879]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999934, -0.023362834, 0.004902303, 0.12706591)
+text = "Make a fist to grab and move"
+font_size = 8
 
 [node name="Add" type="MeshInstance3D" parent="." unique_id=32250768]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.594, 0.698, 0.002)
@@ -79,5 +88,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_18to6")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TrackFX/Area3D" unique_id=1454047177]
 shape = SubResource("CylinderShape3D_w3wpe")
+
+[node name="Label3D" type="Label3D" parent="TrackFX" unique_id=878314404]
+transform = Transform3D(1, 0, 0, 0, -6.556708e-08, 1, 0, -1.5, -4.371139e-08, 0, 1.0029944, -1.1920929e-07)
+text = "Edit"
 
 [node name="Loop Length" parent="." unique_id=439387802 instance=ExtResource("5_amlny")]

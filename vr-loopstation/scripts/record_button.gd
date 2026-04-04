@@ -5,13 +5,15 @@ var record_color: Color
 var play_color: Color
 
 enum RState {IDLE, RECORDING, PLAYING}
-var state = RState.IDLE
+var state: RState = RState.IDLE
 
 var recorded_frames: PackedVector2Array = []
 var _in_contact := false
 
 var _bake_thread: Thread = null
 var _is_paused := false
+
+var bus_name: String = "Master"
 
 # All active audio layers on this track
 var _layers: Array[AudioStreamPlayer] = []
@@ -40,6 +42,11 @@ func _ready() -> void:
 	$AudioStreamPlayer.stream = gen
 	$AudioStreamPlayer.play()
 	add_to_group("record_buttons")
+
+
+func set_track_bus(name: String) -> void:
+	bus_name = name
+	$AudioStreamPlayer.bus = name
 
 func receive_mic_frames(frames: PackedVector2Array) -> void:
 	if state == RState.RECORDING:
@@ -174,6 +181,7 @@ func stop() -> void:
 	gen.mix_rate = AudioServer.get_input_mix_rate()
 	gen.buffer_length = 0.1
 	$AudioStreamPlayer.stream = gen
+	$AudioStreamPlayer.bus = bus_name
 	$AudioStreamPlayer.play()
 
 	playback_stopped.emit()
@@ -204,6 +212,7 @@ func _start_playback(new_wav: AudioStreamWAV, is_master: bool) -> void:
 		_master_start_time = Time.get_ticks_msec() / 1000.0
 	else:
 		player = AudioStreamPlayer.new()
+		player.bus = bus_name
 		add_child(player)
 
 	_layers.append(player)

@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://doo8c3tmfdakb" path="res://Objects/grab.tscn" id="1_et4ga"]
 [ext_resource type="Script" uid="uid://cto74ru0q5c1t" path="res://scripts/extrasettings.gd" id="2_sttgs"]
 [ext_resource type="PackedScene" uid="uid://cyejacy2yoky0" path="res://Objects/FloatingMenu.tscn" id="3_fmenu"]
+[ext_resource type="PackedScene" uid="uid://beh13xyurtjg3" path="res://Objects/open_u_ibutton.tscn" id="3_ytlsr"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_113lq"]
 size = Vector3(6, 1.8, 0.4)
@@ -95,15 +96,8 @@ shape = SubResource("CylinderShape3D_btn")
 [node name="Grab" parent="." unique_id=1866315998 instance=ExtResource("1_et4ga")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0612323, 0)
 
-[node name="OpenUIbutton" type="MeshInstance3D" parent="." unique_id=88670933]
+[node name="OpenUIbutton" parent="." unique_id=767155506 instance=ExtResource("3_ytlsr")]
 transform = Transform3D(0.20000002, 0, 0, 0, -8.742278e-09, -0.20000002, 0, 0.20000002, -8.742278e-09, -1.0558525, -0.25358045, 0.12853438)
-mesh = SubResource("CylinderMesh_113lq")
-surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
-
-[node name="Area3D" type="Area3D" parent="OpenUIbutton" unique_id=100000009]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="OpenUIbutton/Area3D" unique_id=100000010]
-shape = SubResource("CylinderShape3D_btn")
 
 [node name="Knob1" type="MeshInstance3D" parent="." unique_id=240727065]
 transform = Transform3D(0.3, 0, 0, 0, -1.3113417e-08, -0.3, 0, 0.3, -1.3113417e-08, -2.7571943, 0.7132, 0.12853438)

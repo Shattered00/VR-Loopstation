@@ -50,11 +50,11 @@ const EFFECT_COLORS: Dictionary = {
 	"StereoEnhance": Color(0.15, 0.85, 0.90),
 }
 
-# Per-slot effect index and live AudioEffect instance on the Master bus
-var _slot_effect:   Array = [0, 0, 0, 0]
-var _slot_instance: Array = [null, null, null, null]
-var _labels:        Array = []
-var _openui_ready:  bool  = true
+var _track_fx:       Dictionary = {}
+var _selected_track: Node       = null
+var _labels:         Array      = []
+var _openui_ready:   bool       = true
+var _slot_ready:     Array      = [true, true, true, true]
 
 # Knob1 grab-drag state
 var _knob_value:      float  = 0.5
@@ -64,6 +64,8 @@ var _knob_grab_start: float  = 0.0
 
 
 func _ready() -> void:
+	add_to_group("settings")
+
 	var knob_mat: StandardMaterial3D = ($Knob1 as MeshInstance3D).get_surface_override_material(0)
 	if knob_mat:
 		($Knob1 as MeshInstance3D).set_surface_override_material(0, knob_mat.duplicate())
@@ -74,7 +76,7 @@ func _ready() -> void:
 		if mat:
 			btn.set_surface_override_material(0, mat.duplicate())
 		var label := Label3D.new()
-		label.text = "None"
+		label.text = ""
 		label.font_size = 96
 		label.pixel_size = 0.002
 		label.position = Vector3(0, 1.6, 0)
@@ -82,12 +84,52 @@ func _ready() -> void:
 		label.no_depth_test = true
 		btn.add_child(label)
 		_labels.append(label)
+		var area := get_node("TrackFX%d/Area3D" % (i + 1)) as Area3D
+		area.area_entered.connect(_on_slot_entered.bind(i))
+		area.area_exited.connect(_on_slot_exited.bind(i))
 
 	($OpenUIbutton.get_node("Area3D") as Area3D).area_entered.connect(_on_openui_entered)
 	($OpenUIbutton.get_node("Area3D") as Area3D).area_exited.connect(_on_openui_exited)
 	($Knob1.get_node("Area3D") as Area3D).area_entered.connect(_on_knob1_entered)
 	($Knob1.get_node("Area3D") as Area3D).area_exited.connect(_on_knob1_exited)
 
+	_refresh_all()
+
+
+func _get_track_data(track: Node) -> Dictionary:
+	var id := track.get_instance_id()
+	if not _track_fx.has(id):
+		_track_fx[id] = {
+			"effects":   [0, 0, 0, 0],
+			"instances": [null, null, null, null],
+		}
+	return _track_fx[id]
+
+
+func get_selected_track() -> Node:
+	return _selected_track
+
+
+func set_selected_track(track: Node) -> void:
+	_selected_track = track
+	_refresh_all()
+
+
+func open_fx_for_track(track: Node) -> void:
+	_selected_track = track
+	_refresh_all()
+	$FloatingMenu.show_for_track(track)
+
+
+func remove_track(track: Node) -> void:
+	if _selected_track == track:
+		clear_selected_track()
+	_track_fx.erase(track.get_instance_id())
+
+
+func clear_selected_track() -> void:
+	_selected_track = null
+	$FloatingMenu.hide_menu()
 	_refresh_all()
 
 
@@ -103,21 +145,52 @@ func _on_openui_exited(area: Area3D) -> void:
 		_openui_ready = true
 
 
-# Assign an effect by name to a slot, replacing the existing one on the Master bus
+func _on_slot_entered(area: Area3D, slot: int) -> void:
+	if not area.is_in_group("finger_tip") or not _slot_ready[slot]:
+		return
+	_slot_ready[slot] = false
+	_toggle_slot(slot)
+
+func _on_slot_exited(area: Area3D, slot: int) -> void:
+	if area.is_in_group("finger_tip"):
+		_slot_ready[slot] = true
+
+
+func _toggle_slot(slot: int) -> void:
+	if not _is_track_valid():
+		return
+	var data := _get_track_data(_selected_track)
+	var instance = data["instances"][slot]
+	if instance == null:
+		return
+	var bus := AudioServer.get_bus_index(_selected_track.bus_name)
+	if bus == -1:
+		return
+	for i in range(AudioServer.get_bus_effect_count(bus)):
+		if AudioServer.get_bus_effect(bus, i) == instance:
+			AudioServer.set_bus_effect_enabled(bus, i, not AudioServer.is_bus_effect_enabled(bus, i))
+			break
+	_refresh_slot(slot)
+
+
 func set_slot_by_name(slot: int, fx_name: String) -> void:
-	var idx := 0
+	if not _is_track_valid():
+		return
+	var data     := _get_track_data(_selected_track)
+	var bus_name : String = _selected_track.bus_name
+	var idx      := 0
 	for i in range(EFFECTS.size()):
 		if EFFECTS[i]["name"] == fx_name:
 			idx = i
 			break
-	if _slot_instance[slot] != null:
-		var bus := AudioServer.get_bus_index("Master")
+	if data["instances"][slot] != null:
+		var bus := AudioServer.get_bus_index(bus_name)
 		for i in range(AudioServer.get_bus_effect_count(bus) - 1, -1, -1):
-			if AudioServer.get_bus_effect(bus, i) == _slot_instance[slot]:
+			if AudioServer.get_bus_effect(bus, i) == data["instances"][slot]:
 				AudioServer.remove_bus_effect(bus, i)
 				break
-		_slot_instance[slot] = null
-	_slot_effect[slot] = idx
+		data["instances"][slot] = null
+	data["effects"][slot] = idx
 	var fx: Dictionary = EFFECTS[idx]
 	if fx["class"] != "":
 		var obj = ClassDB.instantiate(fx["class"])
@@ -129,13 +202,16 @@ func set_slot_by_name(slot: int, fx_name: String) -> void:
 			elif fx["class"] == "AudioEffectDistortion":
 				effect.set("mode", AudioEffectDistortion.MODE_OVERDRIVE)
 			_set_effect_intensity(effect, fx, _knob_value)
-			AudioServer.add_bus_effect(AudioServer.get_bus_index("Master"), effect)
-			_slot_instance[slot] = effect
+			AudioServer.add_bus_effect(AudioServer.get_bus_index(bus_name), effect)
+			data["instances"][slot] = effect
 	_refresh_slot(slot)
 
 
 func get_slot_name(slot: int) -> String:
-	return EFFECTS[_slot_effect[slot]]["name"]
+	if not _is_track_valid():
+		return "None"
+	var data := _get_track_data(_selected_track)
+	return EFFECTS[data["effects"][slot]]["name"]
 
 
 # Begin tracking the hand position when finger enters Knob1
@@ -156,6 +232,7 @@ func _on_knob1_exited(area: Area3D) -> void:
 	if area.is_in_group("finger_tip"):
 		_knob_hand = null
 
+# Track knob hand drag each frame and push intensity to active effects
 func _process(_delta: float) -> void:
 	if _knob_hand == null:
 		return
@@ -165,10 +242,13 @@ func _process(_delta: float) -> void:
 	_update_knob_visual()
 
 func _apply_knob(value: float) -> void:
+	if not _is_track_valid():
+		return
+	var data := _get_track_data(_selected_track)
 	for slot in range(4):
-		if _slot_instance[slot] == null:
+		if data["instances"][slot] == null:
 			continue
-		_set_effect_intensity(_slot_instance[slot], EFFECTS[_slot_effect[slot]], value)
+		_set_effect_intensity(data["instances"][slot], EFFECTS[data["effects"][slot]], value)
 
 # Drive all bands uniformly for EQ effects, otherwise set the named param
 func _set_effect_intensity(effect: AudioEffect, fx: Dictionary, value: float) -> void:
@@ -195,10 +275,35 @@ func _refresh_all() -> void:
 		_refresh_slot(i)
 
 func _refresh_slot(slot: int) -> void:
-	var btn     := get_node("TrackFX%d" % (slot + 1)) as MeshInstance3D
-	var fx_name : String = EFFECTS[_slot_effect[slot]]["name"]
-	var mat     := btn.get_surface_override_material(0) as StandardMaterial3D
+	var btn := get_node("TrackFX%d" % (slot + 1)) as MeshInstance3D
+	var mat := btn.get_surface_override_material(0) as StandardMaterial3D
+
+	if not _is_track_valid():
+		if mat:
+			mat.albedo_color = Color(0.2, 0.2, 0.2)
+		if slot < _labels.size():
+			_labels[slot].text = ""
+		return
+
+	var data     := _get_track_data(_selected_track)
+	var fx_name  : String = EFFECTS[data["effects"][slot]]["name"]
+	var instance          = data["instances"][slot]
+	var enabled  := true
+
+	if instance != null:
+		var bus := AudioServer.get_bus_index(_selected_track.bus_name)
+		for i in range(AudioServer.get_bus_effect_count(bus)):
+			if AudioServer.get_bus_effect(bus, i) == instance:
+				enabled = AudioServer.is_bus_effect_enabled(bus, i)
+				break
+
 	if mat:
-		mat.albedo_color = EFFECT_COLORS[fx_name]
+		var col: Color = EFFECT_COLORS[fx_name]
+		mat.albedo_color = col if enabled else col * 0.3
 	if slot < _labels.size():
 		_labels[slot].text = fx_name
+
+
+# Guard against freed or null track references
+func _is_track_valid() -> bool:
+	return _selected_track != null and is_instance_valid(_selected_track)

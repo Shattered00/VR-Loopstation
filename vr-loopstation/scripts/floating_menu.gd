@@ -5,9 +5,10 @@ extends Node3D
 var _quad_size:     Vector2
 var _viewport_size: Vector2
 
-var _nav_stack:   Array         = []
-var _active_slot: int           = -1
-var _in_contact:  bool          = false
+var _nav_stack:    Array         = []
+var _active_slot:  int           = -1
+var _active_track: Node          = null
+var _in_contact:   bool          = false
 var _grid:        GridContainer = null
 var _title:       Label         = null
 var _back_btn:    Button        = null
@@ -38,6 +39,18 @@ func show_menu() -> void:
 	visible = true
 
 
+# TrackFX shortcut — jumps straight to FX slots, toggles closed if same track
+func show_for_track(track: Node) -> void:
+	if visible and _active_track == track:
+		hide_menu()
+		return
+	_active_track = track
+	_nav_stack.clear()
+	_go_to(_main_menu())
+	_go_to(_fx_slots_menu())
+	visible = true
+
+
 func hide_menu() -> void:
 	visible = false
 	_nav_stack.clear()
@@ -63,6 +76,19 @@ func _main_menu() -> Dictionary:
 	}
 
 
+func _track_select_menu() -> Dictionary:
+	var items: Array = []
+	var tracks := get_tree().get_nodes_in_group("trackholders")
+	for i in range(tracks.size()):
+		items.append({
+			"label":    "Track %d" % (i + 1),
+			"action":   "pick_track",
+			"target":   "",
+			"node_ref": tracks[i],
+		})
+	return {"title": "Select Track", "items": items}
+
+
 func _fx_slots_menu() -> Dictionary:
 	var s := get_parent()
 	var items: Array = []
@@ -72,7 +98,13 @@ func _fx_slots_menu() -> Dictionary:
 			"action": "pick_slot",
 			"target": str(i)
 		})
-	return {"title": "Track FX", "items": items}
+	var track_label := "Track"
+	if _active_track != null and is_instance_valid(_active_track):
+		var tracks := get_tree().get_nodes_in_group("trackholders")
+		var idx    := tracks.find(_active_track)
+		if idx != -1:
+			track_label = "Track %d" % (idx + 1)
+	return {"title": "%s FX" % track_label, "items": items}
 
 
 func _effect_picker(slot: int) -> Dictionary:
@@ -119,7 +151,19 @@ func _on_item_pressed(item: Dictionary) -> void:
 	match item["action"]:
 		"nav":
 			match item["target"]:
-				"track_fx": _go_to(_fx_slots_menu())
+				"track_fx":
+					var selected_track: Node = get_parent().get_selected_track() as Node
+					if selected_track != null and is_instance_valid(selected_track):
+						_active_track = selected_track
+						_go_to(_fx_slots_menu())
+					else:
+						_go_to(_track_select_menu())
+		"pick_track":
+			var track: Node = item.get("node_ref") as Node
+			if is_instance_valid(track):
+				_active_track = track
+				get_parent().set_selected_track(track)
+				_go_to(_fx_slots_menu())
 		"pick_slot":
 			_active_slot = int(item["target"])
 			_go_to(_effect_picker(_active_slot))
