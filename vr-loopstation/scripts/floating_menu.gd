@@ -67,8 +67,8 @@ func _main_menu() -> Dictionary:
 		"title": "Menu",
 		"items": [
 			{"label": "Track FX",        "action": "nav",         "target": "track_fx"},
-			{"label": "One Shot Mode",   "action": "placeholder", "target": ""},
-			{"label": "Instrument Mode", "action": "placeholder", "target": ""},
+			{"label": "One Shot Mode",   "action": "nav", "target": "one_shot"},
+			{"label": "Instrument Mode", "action": "nav", "target": "instrument_mode"},
 			{"label": "",                "action": "placeholder", "target": ""},
 			{"label": "",                "action": "placeholder", "target": ""},
 			{"label": "",                "action": "placeholder", "target": ""},
@@ -95,6 +95,34 @@ func _track_select_menu() -> Dictionary:
 			"node_ref": tracks[i],
 		})
 	return {"title": "Select Track", "items": items}
+
+
+func _instrument_mode_menu() -> Dictionary:
+	var items: Array = []
+	var tracks := _sorted_tracks()
+	for i in range(tracks.size()):
+		var on := bool(tracks[i].get("instrument_mode"))
+		items.append({
+			"label":    "Track %d: %s" % [i + 1, "ON" if on else "OFF"],
+			"action":   "toggle_track_mode",
+			"target":   "instrument_mode",
+			"node_ref": tracks[i],
+		})
+	return {"id": "instrument_mode", "title": "Instrument Mode", "items": items}
+
+
+func _one_shot_menu() -> Dictionary:
+	var items: Array = []
+	var tracks := _sorted_tracks()
+	for i in range(tracks.size()):
+		var on := bool(tracks[i].get("one_shot"))
+		items.append({
+			"label":    "Track %d: %s" % [i + 1, "ON" if on else "OFF"],
+			"action":   "toggle_track_mode",
+			"target":   "one_shot",
+			"node_ref": tracks[i],
+		})
+	return {"id": "one_shot", "title": "One Shot Mode", "items": items}
 
 
 func _fx_slots_menu() -> Dictionary:
@@ -170,6 +198,21 @@ func _on_item_pressed(item: Dictionary) -> void:
 						_go_to(_fx_slots_menu())
 					else:
 						_go_to(_track_select_menu())
+				"instrument_mode":
+					_go_to(_instrument_mode_menu())
+				"one_shot":
+					_go_to(_one_shot_menu())
+		"toggle_track_mode":
+			var track: Node = item.get("node_ref") as Node
+			if is_instance_valid(track):
+				var prop: String = item["target"]
+				track.set(prop, not track.get(prop))
+				match (_nav_stack.back() as Dictionary).get("id", ""):
+					"instrument_mode":
+						_nav_stack[_nav_stack.size() - 1] = _instrument_mode_menu()
+					"one_shot":
+						_nav_stack[_nav_stack.size() - 1] = _one_shot_menu()
+				_refresh_menu(_nav_stack.back())
 		"pick_track":
 			var track: Node = item.get("node_ref") as Node
 			if is_instance_valid(track):

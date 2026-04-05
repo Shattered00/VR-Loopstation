@@ -1,10 +1,11 @@
 extends Area3D
 
-var idle_color: Color
+var idle_color:   Color
 var record_color: Color
-var play_color: Color
+var play_color:   Color
+var wait_color:   Color
 
-enum RState {IDLE, RECORDING, PLAYING}
+enum RState {IDLE, WAITING, RECORDING, PLAYING}
 var state: RState = RState.IDLE
 
 var recorded_frames: PackedVector2Array = []
@@ -13,13 +14,17 @@ var _in_contact := false
 var _bake_thread: Thread = null
 var _is_paused := false
 
-var bus_name: String = "Master"
+var bus_name:            String = "Master"
+var instrument_mode:     bool   = false
+var amplitude_threshold: float  = 0.02
+var one_shot:            bool   = false
+var _one_shot_wav:       AudioStreamWAV = null
 
 # All active audio layers on this track
-var _layers: Array[AudioStreamPlayer] = []
-var _master_sample_count: int = 0
-var _master_start_time: float = 0.0
-var _layer_record_start_sample: int = 0
+var _layers:                   Array[AudioStreamPlayer] = []
+var _master_sample_count:      int   = 0
+var _master_start_time:        float = 0.0
+var _layer_record_start_sample: int  = 0
 
 signal recording_started
 signal recording_stopped
@@ -27,9 +32,10 @@ signal playback_started
 signal playback_stopped
 
 func _ready() -> void:
-	idle_color = Color(0.2, 0.2, 0.2, 1)
+	idle_color   = Color(0.2, 0.2, 0.2, 1)
 	record_color = Color(1, 0, 0, 1)
-	play_color = Color(0, 1, 0, 1)
+	play_color   = Color(0, 1, 0, 1)
+	wait_color   = Color(1.0, 0.85, 0.0, 1)
 
 	var mat = $MeshInstance3D.get_surface_override_material(0)
 	mat = mat.duplicate()
@@ -49,10 +55,27 @@ func set_track_bus(name: String) -> void:
 	$AudioStreamPlayer.bus = name
 
 func receive_mic_frames(frames: PackedVector2Array) -> void:
+	if state == RState.WAITING:
+		if _calc_rms(frames) >= amplitude_threshold:
+			_is_paused = false
+			recorded_frames.clear()
+			state = RState.RECORDING
+			$MeshInstance3D.get_surface_override_material(0).albedo_color = record_color
+			recording_started.emit()
+		return
 	if state == RState.RECORDING:
 		recorded_frames.append_array(frames)
 		if _master_sample_count > 0 and recorded_frames.size() >= _master_sample_count:
 			_finish_recording()
+
+# Returns the RMS amplitude of a frame buffer for threshold detection
+func _calc_rms(frames: PackedVector2Array) -> float:
+	if frames.is_empty():
+		return 0.0
+	var sum := 0.0
+	for f in frames:
+		sum += f.x * f.x + f.y * f.y
+	return sqrt(sum / (frames.size() * 2))
 
 func _on_area_entered(area: Area3D) -> void:
 	if not area.is_in_group("finger_tip"):
@@ -62,24 +85,42 @@ func _on_area_entered(area: Area3D) -> void:
 	_in_contact = true
 
 	if state == RState.IDLE:
-		_is_paused = false
-		recorded_frames.clear()
-		state = RState.RECORDING
-		$MeshInstance3D.get_surface_override_material(0).albedo_color = record_color
-		recording_started.emit()
+		if one_shot and _one_shot_wav != null:
+			_retrigger()
+		elif instrument_mode:
+			state = RState.WAITING
+			$MeshInstance3D.get_surface_override_material(0).albedo_color = wait_color
+		else:
+			_is_paused = false
+			recorded_frames.clear()
+			state = RState.RECORDING
+			$MeshInstance3D.get_surface_override_material(0).albedo_color = record_color
+			recording_started.emit()
+
+	elif state == RState.WAITING:
+		state = RState.IDLE
+		$MeshInstance3D.get_surface_override_material(0).albedo_color = idle_color
 
 	elif state == RState.RECORDING:
 		_finish_recording()
 
 	elif state == RState.PLAYING:
-		var mix_rate = float(AudioServer.get_input_mix_rate())
-		var master_duration = _master_sample_count / mix_rate
-		var elapsed = fmod(Time.get_ticks_msec() / 1000.0 - _master_start_time, master_duration)
-		_layer_record_start_sample = int(elapsed * mix_rate)
-		recorded_frames.clear()
-		state = RState.RECORDING
-		$MeshInstance3D.get_surface_override_material(0).albedo_color = record_color
-		recording_started.emit()
+		if one_shot:
+			_retrigger()
+		else:
+			var mix_rate = float(AudioServer.get_input_mix_rate())
+			var master_duration = _master_sample_count / mix_rate
+			var elapsed = fmod(Time.get_ticks_msec() / 1000.0 - _master_start_time, master_duration)
+			_layer_record_start_sample = int(elapsed * mix_rate)
+			recorded_frames.clear()
+			state = RState.RECORDING
+			$MeshInstance3D.get_surface_override_material(0).albedo_color = record_color
+			recording_started.emit()
+
+func _on_area_exited(area: Area3D) -> void:
+	if not area.is_in_group("finger_tip"):
+		return
+	_in_contact = false
 
 # Shared logic for ending a recording, whether triggered by tap or auto-end
 func _finish_recording() -> void:
@@ -89,15 +130,7 @@ func _finish_recording() -> void:
 	_bake_thread = Thread.new()
 	_bake_thread.start(_bake_wav)
 
-func _on_area_exited(area: Area3D) -> void:
-	if not area.is_in_group("finger_tip"):
-		return
-	_in_contact = false
-
-# Runs on a background thread
-# Converts recorded mic frames into a looping WAV at the correct sample rate
-# First layer sets the master length
-# Later layers are placed at their exact loop position using silence padding
+# Bakes recorded frames into a looping WAV; first layer sets master length, later layers are offset to their loop position
 func _bake_wav() -> void:
 	var frames = recorded_frames.duplicate()
 	var layer_start = _layer_record_start_sample
@@ -112,12 +145,12 @@ func _bake_wav() -> void:
 		_master_sample_count = frames.size()
 
 	var new_wav = AudioStreamWAV.new()
-	new_wav.mix_rate = mix_rate
-	new_wav.stereo = true
-	new_wav.format = AudioStreamWAV.FORMAT_16_BITS
-	new_wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	new_wav.mix_rate   = mix_rate
+	new_wav.stereo     = true
+	new_wav.format     = AudioStreamWAV.FORMAT_16_BITS
+	new_wav.loop_mode  = AudioStreamWAV.LOOP_DISABLED if one_shot else AudioStreamWAV.LOOP_FORWARD
 	new_wav.loop_begin = 0
-	new_wav.loop_end = _master_sample_count
+	new_wav.loop_end   = _master_sample_count
 
 	var byte_array = PackedByteArray()
 	byte_array.resize(_master_sample_count * 4)
@@ -138,6 +171,8 @@ func _bake_wav() -> void:
 			byte_array.encode_s16(wav_idx * 4 + 2, right)
 
 	new_wav.data = byte_array
+	if one_shot and is_master:
+		_one_shot_wav = new_wav
 	call_deferred("_start_playback", new_wav, is_master)
 
 func pause() -> void:
@@ -171,8 +206,9 @@ func stop() -> void:
 	_layers.clear()
 
 	_master_sample_count = 0
-	_master_start_time = 0.0
+	_master_start_time   = 0.0
 	recorded_frames.clear()
+	_one_shot_wav = null
 	state = RState.IDLE
 	$MeshInstance3D.get_surface_override_material(0).albedo_color = idle_color
 
@@ -197,6 +233,39 @@ func set_volume(v: float) -> void:
 	var db = -80.0 if v <= 0.001 else linear_to_db(v)
 	for player in _layers:
 		player.volume_db = db
+
+# Replay the stored one-shot clip from the beginning
+func _retrigger() -> void:
+	for player in _layers:
+		player.stop()
+	_layers.clear()
+	var player := $AudioStreamPlayer
+	player.stream = _one_shot_wav
+	player.bus    = bus_name
+	var slider := get_parent().get_node_or_null("AudioSlider")
+	if slider:
+		var v: float = slider.value
+		player.volume_db = -80.0 if v <= 0.001 else linear_to_db(v)
+	else:
+		player.volume_db = 0.0
+	_layers.append(player)
+	_master_start_time = Time.get_ticks_msec() / 1000.0
+	player.play()
+	player.finished.connect(_on_oneshot_finished, CONNECT_ONE_SHOT)
+	state = RState.PLAYING
+	$MeshInstance3D.get_surface_override_material(0).albedo_color = play_color
+	playback_started.emit()
+
+# Clip ended naturally — reset to idle, keep the stored WAV for retriggering
+func _on_oneshot_finished() -> void:
+	for player in _layers:
+		player.stop()
+	_layers.clear()
+	_master_sample_count = 0
+	_master_start_time   = 0.0
+	state = RState.IDLE
+	$MeshInstance3D.get_surface_override_material(0).albedo_color = idle_color
+	playback_stopped.emit()
 
 # Starts playback and syncs new layers to the master loop position
 func _start_playback(new_wav: AudioStreamWAV, is_master: bool) -> void:
@@ -227,6 +296,8 @@ func _start_playback(new_wav: AudioStreamWAV, is_master: bool) -> void:
 
 	if is_master:
 		player.play()
+		if one_shot:
+			player.finished.connect(_on_oneshot_finished, CONNECT_ONE_SHOT)
 	else:
 		var master_duration = _master_sample_count / float(AudioServer.get_input_mix_rate())
 		var elapsed = fmod(Time.get_ticks_msec() / 1000.0 - _master_start_time, master_duration)

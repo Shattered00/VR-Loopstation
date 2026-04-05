@@ -7,6 +7,18 @@ class_name Trackholder
 
 var bus_name: String = ""
 
+var instrument_mode: bool = false:
+	set(value):
+		instrument_mode = value
+		if has_node("Record Button"):
+			$"Record Button".instrument_mode = value
+
+var one_shot: bool = false:
+	set(value):
+		one_shot = value
+		if has_node("Record Button"):
+			$"Record Button".one_shot = value
+
 var _add_ready:     bool = true
 var _trackfx_ready: bool = true
 
