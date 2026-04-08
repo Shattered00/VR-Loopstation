@@ -5,7 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://cyejacy2yoky0" path="res://Objects/FloatingMenu.tscn" id="3_fmenu"]
 [ext_resource type="PackedScene" uid="uid://beh13xyurtjg3" path="res://Objects/open_u_ibutton.tscn" id="3_ytlsr"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pdnyi"]
+
 [sub_resource type="BoxMesh" id="BoxMesh_113lq"]
+material = SubResource("StandardMaterial3D_pdnyi")
 size = Vector3(6, 1.8, 0.4)
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_113lq"]
