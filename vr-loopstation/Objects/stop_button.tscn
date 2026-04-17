@@ -7,6 +7,7 @@
 [sub_resource type="CylinderMesh" id="CylinderMesh_1qprc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w3wpe"]
+albedo_color = Color(0.23996058, 0.21802217, 0.09214722, 1)
 
 [node name="Stop Button" type="Area3D" unique_id=1517744940]
 transform = Transform3D(0.2, 0, 0, 0, -1.9670125e-08, -0.2, 0, 0.44999996, -8.742277e-09, 0, 0, 0)

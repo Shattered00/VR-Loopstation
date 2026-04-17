@@ -8,7 +8,8 @@
 [sub_resource type="Environment" id="Environment_no0p5"]
 background_mode = 1
 ambient_light_source = 2
-ambient_light_color = Color(0.46618086, 0.4661808, 0.4661808, 1)
+ambient_light_color = Color(0.33333334, 0.26666668, 0.26666668, 1)
+ambient_light_energy = 0.3
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_t82cb"]
 
@@ -32,3 +33,12 @@ shape = SubResource("WorldBoundaryShape3D_t82cb")
 
 [node name="Player" parent="." unique_id=2024556462 instance=ExtResource("1_2p2p4")]
 transform = Transform3D(0.9999998, 0, 0, 0, 0.9999999, 9.313226e-10, 0, -9.313226e-10, 0.9999999, 8.940697e-08, 0, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=500450280]
+transform = Transform3D(0.70710677, -0.49999997, 0.49999997, 0, 0.70710677, 0.70710677, -0.70710677, -0.49999997, 0.49999997, 0, 0, 0)
+light_energy = 0.8
+
+[node name="OmniLight3D" type="OmniLight3D" parent="." unique_id=1496006775]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0.5)
+light_energy = 0.4
+omni_range = 4.0

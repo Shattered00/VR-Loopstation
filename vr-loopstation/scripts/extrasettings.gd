@@ -14,7 +14,7 @@ const EFFECTS: Array = [
 	{"name": "EQ21",          "class": "AudioEffectEQ21",             "param": "",              "min": -15.0,  "max":  15.0},
 	{"name": "HighPass",      "class": "AudioEffectHighPassFilter",   "param": "cutoff_hz",     "min": 200.0,  "max": 8000.0},
 	{"name": "HighShelf",     "class": "AudioEffectHighShelfFilter",  "param": "cutoff_hz",     "min": 200.0,  "max": 8000.0},
-	{"name": "Limiter",       "class": "AudioEffectLimiter",          "param": "threshold_db",  "min":   0.0,  "max": -30.0},
+	{"name": "Limiter",       "class": "AudioEffectLimiter",          "param": "threshold_db",  "min": -30.0,  "max":   0.0},
 	{"name": "LowPass",       "class": "AudioEffectLowPassFilter",    "param": "cutoff_hz",     "min": 200.0,  "max": 8000.0},
 	{"name": "LowShelf",      "class": "AudioEffectLowShelfFilter",   "param": "cutoff_hz",     "min": 200.0,  "max": 8000.0},
 	{"name": "Notch",         "class": "AudioEffectNotchFilter",      "param": "cutoff_hz",     "min": 200.0,  "max": 8000.0},
@@ -62,6 +62,15 @@ var _knob_hand:       Node3D = null
 var _knob_grab_y:     float  = 0.0
 var _knob_grab_start: float  = 0.0
 
+# Metronome state
+var _metro_on:          bool              = false
+var _metro_bpm:         float             = 120.0
+var _metro_elapsed:     float             = 0.0
+var _metro_player:      AudioStreamPlayer = null
+var _metro_hold_active: bool              = false
+var _metro_hold_time:   float             = 0.0
+var _metro_hold_fired:  bool              = false
+
 
 func _ready() -> void:
 	add_to_group("settings")
@@ -92,6 +101,18 @@ func _ready() -> void:
 	($OpenUIbutton.get_node("Area3D") as Area3D).area_exited.connect(_on_openui_exited)
 	($Knob1.get_node("Area3D") as Area3D).area_entered.connect(_on_knob1_entered)
 	($Knob1.get_node("Area3D") as Area3D).area_exited.connect(_on_knob1_exited)
+
+	# NOTE: node must be named "Metronomebutton" in the Settings scene
+	var metro_mat: StandardMaterial3D = ($Metronomebutton as MeshInstance3D).get_surface_override_material(0)
+	if metro_mat:
+		($Metronomebutton as MeshInstance3D).set_surface_override_material(0, metro_mat.duplicate())
+	($Metronomebutton.get_node("Area3D") as Area3D).area_entered.connect(_on_metro_entered)
+	($Metronomebutton.get_node("Area3D") as Area3D).area_exited.connect(_on_metro_exited)
+	_metro_player = AudioStreamPlayer.new()
+	_metro_player.bus = "Master"
+	_metro_player.stream = _generate_click()
+	add_child(_metro_player)
+	_update_metro_visual()
 
 	_refresh_all()
 
@@ -232,14 +253,24 @@ func _on_knob1_exited(area: Area3D) -> void:
 	if area.is_in_group("finger_tip"):
 		_knob_hand = null
 
-# Track knob hand drag each frame and push intensity to active effects
-func _process(_delta: float) -> void:
-	if _knob_hand == null:
-		return
-	var hand_y := to_local(_knob_hand.global_position).y
-	_knob_value = clamp(_knob_grab_start + (hand_y - _knob_grab_y) * 2.0, 0.0, 1.0)
-	_apply_knob(_knob_value)
-	_update_knob_visual()
+# Handle knob drag, metronome hold detection, and metronome tick each frame
+func _process(delta: float) -> void:
+	if _knob_hand != null:
+		var hand_y := to_local(_knob_hand.global_position).y
+		_knob_value = clamp(_knob_grab_start + (hand_y - _knob_grab_y) * 2.0, 0.0, 1.0)
+		_apply_knob(_knob_value)
+		_update_knob_visual()
+	if _metro_hold_active:
+		_metro_hold_time += delta
+		if not _metro_hold_fired and _metro_hold_time >= 0.5:
+			_metro_hold_fired = true
+			$FloatingMenu.show_for_bpm()
+	if _metro_on:
+		_metro_elapsed += delta
+		var interval := 60.0 / _metro_bpm
+		if _metro_elapsed >= interval:
+			_metro_elapsed -= interval
+			_metro_player.play()
 
 func _apply_knob(value: float) -> void:
 	if not _is_track_valid():
@@ -302,6 +333,55 @@ func _refresh_slot(slot: int) -> void:
 		mat.albedo_color = col if enabled else col * 0.3
 	if slot < _labels.size():
 		_labels[slot].text = fx_name
+
+
+# Begin tracking hold time when finger enters the metronome button
+func _on_metro_entered(area: Area3D) -> void:
+	if not area.is_in_group("finger_tip") or _metro_hold_active:
+		return
+	_metro_hold_active = true
+	_metro_hold_time   = 0.0
+	_metro_hold_fired  = false
+
+# Short press toggles metronome; hold has already opened the BPM menu
+func _on_metro_exited(area: Area3D) -> void:
+	if not area.is_in_group("finger_tip"):
+		return
+	if not _metro_hold_fired:
+		_toggle_metronome()
+	_metro_hold_active = false
+
+func _toggle_metronome() -> void:
+	_metro_on      = not _metro_on
+	_metro_elapsed = 0.0
+	_update_metro_visual()
+
+func _update_metro_visual() -> void:
+	var mat := ($Metronomebutton as MeshInstance3D).get_surface_override_material(0) as StandardMaterial3D
+	if mat:
+		mat.albedo_color = Color(0.0, 1.0, 0.0) if _metro_on else Color(0.2, 0.2, 0.2)
+
+func set_bpm(bpm: float) -> void:
+	_metro_bpm     = max(1.0, bpm)
+	_metro_elapsed = 0.0
+
+# Generate a short sine-burst click for the metronome tick (880 Hz, 50 ms, exponential decay)
+func _generate_click() -> AudioStreamWAV:
+	var mix_rate  := float(AudioServer.get_mix_rate())
+	var n_samples := int(mix_rate * 0.05)
+	var wav       := AudioStreamWAV.new()
+	wav.mix_rate  = int(mix_rate)
+	wav.stereo    = false
+	wav.format    = AudioStreamWAV.FORMAT_16_BITS
+	wav.loop_mode = AudioStreamWAV.LOOP_DISABLED
+	var bytes     := PackedByteArray()
+	bytes.resize(n_samples * 2)
+	for i in n_samples:
+		var t := i / mix_rate
+		var s := sin(TAU * 880.0 * t) * exp(-60.0 * t)
+		bytes.encode_s16(i * 2, int(clamp(s, -1.0, 1.0) * 32767))
+	wav.data = bytes
+	return wav
 
 
 # Guard against freed or null track references

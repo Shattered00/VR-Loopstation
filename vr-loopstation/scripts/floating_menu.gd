@@ -39,6 +39,14 @@ func show_menu() -> void:
 	visible = true
 
 
+# Metronome hold shortcut — jumps straight to BPM picker
+func show_for_bpm() -> void:
+	_nav_stack.clear()
+	_go_to(_main_menu())
+	_go_to(_bpm_menu())
+	visible = true
+
+
 # TrackFX shortcut — jumps straight to FX slots, toggles closed if same track
 func show_for_track(track: Node) -> void:
 	if visible and _active_track == track:
@@ -67,11 +75,11 @@ func _main_menu() -> Dictionary:
 		"title": "Menu",
 		"items": [
 			{"label": "Track FX",        "action": "nav",         "target": "track_fx"},
-			{"label": "One Shot Mode",   "action": "nav", "target": "one_shot"},
-			{"label": "Instrument Mode", "action": "nav", "target": "instrument_mode"},
-			{"label": "",                "action": "placeholder", "target": ""},
-			{"label": "",                "action": "placeholder", "target": ""},
-			{"label": "",                "action": "placeholder", "target": ""},
+			{"label": "One Shot Mode",   "action": "nav",         "target": "one_shot"},
+			{"label": "Instrument Mode", "action": "nav",         "target": "instrument_mode"},
+			{"label": "Metronome",   "action": "nav", "target": "metronome"},
+			{"label": "Loop Sync",   "action": "nav", "target": "loop_sync"},
+			{"label": "",            "action": "placeholder", "target": ""},
 		]
 	}
 
@@ -143,6 +151,31 @@ func _fx_slots_menu() -> Dictionary:
 	return {"id": "fx_slots", "title": "%s FX" % track_label, "items": items}
 
 
+func _loop_sync_menu() -> Dictionary:
+	var items: Array = []
+	var tracks := _sorted_tracks()
+	for i in range(tracks.size()):
+		var on := bool(tracks[i].get("loop_sync"))
+		items.append({
+			"label":    "Track %d: %s" % [i + 1, "ON" if on else "OFF"],
+			"action":   "toggle_track_mode",
+			"target":   "loop_sync",
+			"node_ref": tracks[i],
+		})
+	return {"id": "loop_sync", "title": "Loop Sync", "items": items}
+
+
+func _bpm_menu() -> Dictionary:
+	var items: Array = []
+	for bpm in [60, 70, 80, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180]:
+		items.append({
+			"label":  "%d BPM" % bpm,
+			"action": "set_bpm",
+			"target": str(bpm),
+		})
+	return {"id": "bpm", "title": "Metronome BPM", "items": items}
+
+
 func _effect_picker(slot: int) -> Dictionary:
 	var s     := get_parent()
 	var items : Array = []
@@ -202,6 +235,10 @@ func _on_item_pressed(item: Dictionary) -> void:
 					_go_to(_instrument_mode_menu())
 				"one_shot":
 					_go_to(_one_shot_menu())
+				"loop_sync":
+					_go_to(_loop_sync_menu())
+				"metronome":
+					_go_to(_bpm_menu())
 		"toggle_track_mode":
 			var track: Node = item.get("node_ref") as Node
 			if is_instance_valid(track):
@@ -212,6 +249,8 @@ func _on_item_pressed(item: Dictionary) -> void:
 						_nav_stack[_nav_stack.size() - 1] = _instrument_mode_menu()
 					"one_shot":
 						_nav_stack[_nav_stack.size() - 1] = _one_shot_menu()
+					"loop_sync":
+						_nav_stack[_nav_stack.size() - 1] = _loop_sync_menu()
 				_refresh_menu(_nav_stack.back())
 		"pick_track":
 			var track: Node = item.get("node_ref") as Node
@@ -230,6 +269,9 @@ func _on_item_pressed(item: Dictionary) -> void:
 			_go_back()
 			_nav_stack[_nav_stack.size() - 1] = _fx_slots_menu()
 			_refresh_menu(_nav_stack.back())
+		"set_bpm":
+			get_parent().set_bpm(float(item["target"]))
+			_go_back()
 		"placeholder":
 			pass
 

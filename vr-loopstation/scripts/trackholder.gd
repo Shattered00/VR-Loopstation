@@ -19,6 +19,12 @@ var one_shot: bool = false:
 		if has_node("Record Button"):
 			$"Record Button".one_shot = value
 
+var loop_sync: bool = true:
+	set(value):
+		loop_sync = value
+		if has_node("Record Button"):
+			$"Record Button".loop_sync = value
+
 var _add_ready:     bool = true
 var _trackfx_ready: bool = true
 

@@ -30,6 +30,7 @@ buses/channel_disable_time=60.0
 
 XRToolsUserSettings="*uid://y3hihonqu5sb"
 XRToolsRumbleManager="*uid://cafatxgvxbpc6"
+LoopGrid="*res://scripts/loop_grid.gd"
 
 [editor_plugins]
 

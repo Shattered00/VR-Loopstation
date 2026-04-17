@@ -2,16 +2,21 @@
 
 [ext_resource type="PackedScene" uid="uid://doo8c3tmfdakb" path="res://Objects/grab.tscn" id="1_et4ga"]
 [ext_resource type="Script" uid="uid://cto74ru0q5c1t" path="res://scripts/extrasettings.gd" id="2_sttgs"]
+[ext_resource type="PackedScene" uid="uid://b08cqe86tdii4" path="res://Objects/metronomebutton.tscn" id="2_whp48"]
 [ext_resource type="PackedScene" uid="uid://cyejacy2yoky0" path="res://Objects/FloatingMenu.tscn" id="3_fmenu"]
 [ext_resource type="PackedScene" uid="uid://beh13xyurtjg3" path="res://Objects/open_u_ibutton.tscn" id="3_ytlsr"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_113lq"]
 size = Vector3(6, 1.8, 0.4)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_whp48"]
+albedo_color = Color(0.101960786, 0.101960786, 0.18039216, 1)
+metallic = 0.3
+roughness = 0.6
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_113lq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_et4ga"]
-albedo_color = Color(1, 0.84313726, 0.84313726, 1)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_btn"]
 
@@ -21,40 +26,43 @@ script = ExtResource("2_sttgs")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=563767679]
 mesh = SubResource("BoxMesh_113lq")
+surface_material_override/0 = SubResource("StandardMaterial3D_whp48")
 
 [node name="Label3D" type="Label3D" parent="." unique_id=632805549]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6523924, 0.36552835)
-text = "Place holder text
+text = "FX and Menu
 "
 outline_size = 0
 
-[node name="Metronomebutton" type="MeshInstance3D" parent="." unique_id=1380031586]
+[node name="Metronomebutton" parent="." unique_id=104251584 instance=ExtResource("2_whp48")]
 transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 1.1857896, -0.25358045, 0.12853438)
-mesh = SubResource("CylinderMesh_113lq")
-surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
 [node name="InputFX1" type="MeshInstance3D" parent="." unique_id=1682883783]
 transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, -2.6509879, 0.3781187, 0.12853438)
+visible = false
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
 [node name="InputFX2" type="MeshInstance3D" parent="." unique_id=244732806]
 transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, -2.2203317, 0.3781187, 0.12853438)
+visible = false
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
 [node name="InputFX3" type="MeshInstance3D" parent="." unique_id=510313212]
 transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, -1.7438134, 0.3781187, 0.12853438)
+visible = false
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
 [node name="InputFX4" type="MeshInstance3D" parent="." unique_id=1175627287]
 transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, -1.2703457, 0.3781187, 0.12853438)
+visible = false
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
 [node name="TrackFX1" type="MeshInstance3D" parent="." unique_id=1319031337]
-transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 1.5088272, 0.3781187, 0.12853438)
+transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, -0.75, 0.378, 0.129)
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
@@ -64,7 +72,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 shape = SubResource("CylinderShape3D_btn")
 
 [node name="TrackFX2" type="MeshInstance3D" parent="." unique_id=201062004]
-transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 1.8963876, 0.3781187, 0.12853438)
+transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, -0.25, 0.378, 0.129)
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
@@ -74,7 +82,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 shape = SubResource("CylinderShape3D_btn")
 
 [node name="TrackFX3" type="MeshInstance3D" parent="." unique_id=566106272]
-transform = Transform3D(0.19993989, 0.0009779905, 0.004804745, 0.004809428, -0.0009574825, -0.19993988, -0.00095469283, 0.19999532, -0.0009807138, 2.2879808, 0.3781187, 0.12853438)
+transform = Transform3D(0.19993989, 0.0009779905, 0.004804745, 0.004809428, -0.0009574825, -0.19993988, -0.00095469283, 0.19999532, -0.0009807138, 0.25, 0.378, 0.129)
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
@@ -84,7 +92,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 shape = SubResource("CylinderShape3D_btn")
 
 [node name="TrackFX4" type="MeshInstance3D" parent="." unique_id=27022612]
-transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 2.6625993, 0.3781187, 0.12853438)
+transform = Transform3D(0.2, 0, 0, 0, -8.742278e-09, -0.2, 0, 0.2, -8.742278e-09, 0.75, 0.378, 0.129)
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
@@ -101,6 +109,7 @@ transform = Transform3D(0.20000002, 0, 0, 0, -8.742278e-09, -0.20000002, 0, 0.20
 
 [node name="Knob1" type="MeshInstance3D" parent="." unique_id=240727065]
 transform = Transform3D(0.3, 0, 0, 0, -1.3113417e-08, -0.3, 0, 0.3, -1.3113417e-08, -2.7571943, 0.7132, 0.12853438)
+visible = false
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
@@ -111,6 +120,7 @@ shape = SubResource("CylinderShape3D_btn")
 
 [node name="Knob2" type="MeshInstance3D" parent="." unique_id=755140512]
 transform = Transform3D(0.3, 0, 0, 0, -1.3113417e-08, -0.3, 0, 0.3, -1.3113417e-08, 2.5930562, 0.7132, 0.12853438)
+visible = false
 mesh = SubResource("CylinderMesh_113lq")
 surface_material_override/0 = SubResource("StandardMaterial3D_et4ga")
 
@@ -121,3 +131,4 @@ shape = SubResource("CylinderShape3D_btn")
 
 [node name="FloatingMenu" parent="." unique_id=1461941747 instance=ExtResource("3_fmenu")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1.1819327)
+visible = false

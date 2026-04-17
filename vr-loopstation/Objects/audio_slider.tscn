@@ -8,12 +8,12 @@ size = Vector3(0.2, 0.15, 0.2)
 [sub_resource type="BoxMesh" id="BoxMesh_inxy2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slider"]
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.21568628, 0.21568628, 0.21568628, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_lptc5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nraq1"]
-albedo_color = Color(0, 0, 0, 1)
+albedo_color = Color(0.21568628, 0.21568628, 0.21568628, 1)
 
 [node name="AudioSlider" type="Node3D" unique_id=2004782510]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)

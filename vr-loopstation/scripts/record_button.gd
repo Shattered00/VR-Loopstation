@@ -18,6 +18,7 @@ var bus_name:            String = "Master"
 var instrument_mode:     bool   = false
 var amplitude_threshold: float  = 0.02
 var one_shot:            bool   = false
+var loop_sync:           bool   = true  # when true, quantises to master grid like RC-505
 var _one_shot_wav:       AudioStreamWAV = null
 
 # All active audio layers on this track
@@ -67,6 +68,14 @@ func receive_mic_frames(frames: PackedVector2Array) -> void:
 		recorded_frames.append_array(frames)
 		if _master_sample_count > 0 and recorded_frames.size() >= _master_sample_count:
 			_finish_recording()
+
+# Trim or pad recorded_frames to the nearest LoopGrid multiple before baking
+func _sync_quantise_frames() -> void:
+	if not loop_sync or not LoopGrid.is_set:
+		return
+	var q := LoopGrid.quantise_to_master(recorded_frames.size())
+	if q != recorded_frames.size():
+		recorded_frames.resize(q)   # PackedVector2Array pads with Vector2(0,0) (silence)
 
 # Returns the RMS amplitude of a frame buffer for threshold detection
 func _calc_rms(frames: PackedVector2Array) -> float:
@@ -124,6 +133,8 @@ func _on_area_exited(area: Area3D) -> void:
 
 # Shared logic for ending a recording, whether triggered by tap or auto-end
 func _finish_recording() -> void:
+	if _master_sample_count == 0 and not one_shot:
+		_sync_quantise_frames()
 	state = RState.PLAYING
 	$MeshInstance3D.get_surface_override_material(0).albedo_color = play_color
 	recording_stopped.emit()
@@ -205,8 +216,9 @@ func stop() -> void:
 			player.queue_free()
 	_layers.clear()
 
-	_master_sample_count = 0
-	_master_start_time   = 0.0
+	_master_sample_count       = 0
+	_master_start_time         = 0.0
+	_layer_record_start_sample = 0
 	recorded_frames.clear()
 	_one_shot_wav = null
 	state = RState.IDLE
@@ -219,7 +231,7 @@ func stop() -> void:
 	$AudioStreamPlayer.stream = gen
 	$AudioStreamPlayer.bus = bus_name
 	$AudioStreamPlayer.play()
-
+	LoopGrid.on_track_stopped(get_tree())
 	playback_stopped.emit()
 
 # Returns 0.0 to 1.0 showing how far into the loop
@@ -278,7 +290,6 @@ func _start_playback(new_wav: AudioStreamWAV, is_master: bool) -> void:
 	var player: AudioStreamPlayer
 	if is_master:
 		player = $AudioStreamPlayer
-		_master_start_time = Time.get_ticks_msec() / 1000.0
 	else:
 		player = AudioStreamPlayer.new()
 		player.bus = bus_name
@@ -295,6 +306,9 @@ func _start_playback(new_wav: AudioStreamWAV, is_master: bool) -> void:
 		player.volume_db = 0.0
 
 	if is_master:
+		if loop_sync and not one_shot and not LoopGrid.is_set:
+			LoopGrid.set_master(_master_sample_count)
+		_master_start_time = Time.get_ticks_msec() / 1000.0
 		player.play()
 		if one_shot:
 			player.finished.connect(_on_oneshot_finished, CONNECT_ONE_SHOT)

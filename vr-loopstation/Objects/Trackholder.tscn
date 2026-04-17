@@ -9,19 +9,34 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_lptc5"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w3wpe"]
+albedo_color = Color(0.101960786, 0.101960786, 0.18039216, 1)
+metallic = 0.3
+roughness = 0.6
+
 [sub_resource type="BoxMesh" id="BoxMesh_amlny"]
 size = Vector3(0.05, 0.2, 0.08)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nraq1"]
+albedo_color = Color(0.27387273, 0.27387273, 0.27387273, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_nraq1"]
 size = Vector3(0.05, 0.2, 0.08)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1qprc"]
+albedo_color = Color(0.27450982, 0.27450982, 0.27450982, 1)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_inxy2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmx6c"]
+albedo_color = Color(0.27450982, 0.27450982, 0.27450982, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_amlny"]
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_xqly6"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_18to6"]
+albedo_color = Color(0.14900985, 0.12942663, 0.42864436, 1)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_w3wpe"]
 
@@ -37,10 +52,9 @@ transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.19821183, -0.2353698
 text = "Record/Play
 "
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1047911349]
-
 [node name="Mainbody" type="MeshInstance3D" parent="." unique_id=1261838586]
 mesh = SubResource("BoxMesh_lptc5")
+surface_material_override/0 = SubResource("StandardMaterial3D_w3wpe")
 
 [node name="AudioSlider" parent="." unique_id=2004782510 instance=ExtResource("2_lptc5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0.2510078, -0.27274945, 0.5220666)
@@ -62,10 +76,12 @@ text = "Make a fist to grab and move"
 [node name="Add" type="MeshInstance3D" parent="." unique_id=32250768]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.594, 0.698, 0.002)
 mesh = SubResource("BoxMesh_amlny")
+surface_material_override/0 = SubResource("StandardMaterial3D_nraq1")
 
 [node name="Add" type="MeshInstance3D" parent="Add" unique_id=310055315]
 transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0, 0, 0, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_nraq1")
+surface_material_override/0 = SubResource("StandardMaterial3D_1qprc")
 
 [node name="Area3D" type="Area3D" parent="Add" unique_id=1557216748]
 
@@ -76,6 +92,7 @@ shape = SubResource("BoxShape3D_inxy2")
 [node name="Remove" type="MeshInstance3D" parent="." unique_id=94388709]
 transform = Transform3D(-4.3711385e-08, -0.99999994, 0, 0.99999994, -4.3711385e-08, 0, 0, 0, 1, -0.594, 0.698, 0.002)
 mesh = SubResource("BoxMesh_nraq1")
+surface_material_override/0 = SubResource("StandardMaterial3D_dmx6c")
 
 [node name="Area3D" type="Area3D" parent="Remove" unique_id=1069800332]
 
